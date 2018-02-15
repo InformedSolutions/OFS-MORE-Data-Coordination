@@ -1,0 +1,5 @@
+django==1.11.6
+psycopg2
+unittest-xml-reporting
+requests
+django_cron
