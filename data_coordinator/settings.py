@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Automatic deletion frequency is done in minutes
-AUTOMATIC_DELETION_FREQUENCY = 1
+AUTOMATIC_DELETION_FREQUENCY = 0
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
