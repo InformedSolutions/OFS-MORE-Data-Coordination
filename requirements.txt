@@ -3,3 +3,4 @@ psycopg2
 unittest-xml-reporting
 requests
 django_cron
+django-debug-toolbar
