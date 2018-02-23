@@ -1,0 +1,4 @@
+PROJECT_SETTINGS=data_coordinator.settings.dev
+PROJECT_PORT=8004
+PROJECT_IP=127.0.0.1
+
