@@ -13,32 +13,32 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Automatic deletion frequency is done in minutes
 AUTOMATIC_DELETION_FREQUENCY = 120
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l^fle)2fs3k6r2aqmh)v1@$1#=cs5v28n*+=0z=4el067i6&pf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
-INSTALLED_APPS = [
-    'application.apps.ApplicationConfig',
-    'django_cron',
+BUILTIN_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+THIRD_PARTY_APPS = [
+    'django_cron',
+]
+
+PROJECT_APPS = [
+    'application.apps.ApplicationConfig',
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,34 +73,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'data_coordinator.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'ofsted',
-        'PASSWORD': 'OfstedB3ta',
-        'HOST': '130.130.52.132',
-        'PORT': '5462',
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
