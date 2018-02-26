@@ -1,0 +1,23 @@
+xmlrunner/
+logs/
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+db.sqlite3
+
+
+staticfiles/
+
+### Vim file ###
+*~
+*.swp
+*.swo
+
+### Dev files ###
+.settings/
+.idea/
+.makerc
+.venv
