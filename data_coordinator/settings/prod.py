@@ -23,8 +23,8 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': os.environ.get('DATABASE_USER', 'ofsted'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'OfstedB3ta'),
-        'HOST': os.environ.get('DATABASE_HOST', '130.130.52.132'),
-        'PORT': os.environ.get('DATABASE_PORT', '5462')
+        'HOST': os.environ.get('DATABASE_HOST', 'ofsted-postgres'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432')
     }
 }
 
