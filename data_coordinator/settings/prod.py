@@ -29,3 +29,33 @@ DATABASES = {
 }
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'l^fle)2fs3k6r2aqmh)v1@$1#=cs5v28n*+=0z=4el067i6&pf'
+
+# Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'formatters': {
+    'console': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+        },
+  'handlers': {
+    'django.server': {
+        'level': 'INFO',
+        'class': 'logging.handlers.RotatingFileHandler',
+        'maxBytes': 1 * 1024 * 1024,
+        'filename': 'logs/output.log',
+        'formatter': 'console',
+        'maxBytes': 1 * 1024 * 1024,
+        'backupCount': '30'
+    },
+   },
+   'loggers': {
+     'django.server': {
+       'handlers': ['django.server'],
+         'level': 'INFO',
+           'propagate': True,
+      },
+    },
+}
