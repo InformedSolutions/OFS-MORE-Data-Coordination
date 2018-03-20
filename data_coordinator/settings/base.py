@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Automatic deletion frequency is done in minutes
-AUTOMATIC_DELETION_FREQUENCY = 0
+AUTOMATIC_DELETION_FREQUENCY = 120
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
