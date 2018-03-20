@@ -2,8 +2,8 @@
 
 # Migrate Django_Cron
 echo "Apply database migrations"
-python manage.py makemigrations django_cron
-python manage.py migrate django_cron
+python manage.py makemigrations django_cron --settings=$PROJECT_SETTINGS
+python manage.py migrate django_cron --settings=$PROJECT_SETTINGS
 
 # Start Cron Job defined in docker file
 echo "Starting cron"
