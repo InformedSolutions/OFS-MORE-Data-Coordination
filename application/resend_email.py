@@ -3,9 +3,9 @@ import random
 import string
 import pytz
 
-from notify import send_email
+from .notify import send_email
 from datetime import datetime, timedelta
-from models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
+from .models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
 
 from django.conf import settings
 from django.shortcuts import reverse
@@ -14,6 +14,7 @@ from django_cron import CronJobBase, Schedule
 
 
 class resend_email(CronJobBase):
+
     schedule = Schedule(run_every_mins=60)
     code = 'application.resend_email'
 

@@ -1,7 +1,7 @@
 import logging
 
-from models import Application
-from data_coordinator import settings
+from .models import Application
+from django.conf import settings
 from datetime import datetime, timedelta
 
 from django_cron import CronJobBase, Schedule
