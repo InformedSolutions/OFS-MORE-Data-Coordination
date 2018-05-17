@@ -15,12 +15,13 @@ from django_cron import CronJobBase, Schedule
 
 class resend_email(CronJobBase):
 
-    schedule = Schedule(run_every_mins=60)
+    schedule = Schedule(run_every_mins=0.5)
     code = 'application.resend_email'
 
     def do(self):
         log = logging.getLogger('django.server')
         log.info('Checking for household member health checks not completed in the last 5 days')
+        print('Checking for household member health checks not completed in the last 5 days')
         five_days_ago = datetime.now() - timedelta(days=5)
         expired_resends = list(
             AdultInHome.objects.exclude(health_check_status='Done').filter(email_resent__lte=five_days_ago))

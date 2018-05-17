@@ -2,8 +2,8 @@ import random
 import string
 import pytz
 
-from notify import send_email
-from models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
+from application.notify import send_email
+from application.models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
 
 from django.conf import settings
 from django.shortcuts import reverse
