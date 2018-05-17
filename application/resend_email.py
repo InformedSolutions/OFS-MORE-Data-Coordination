@@ -1,11 +1,11 @@
 import logging
 import random
 import string
+import pytz
 
-from application import models
-from application.notify import send_email
+from notify import send_email
 from datetime import datetime, timedelta
-from models import Application, ApplicantPersonalDetails, ApplicantName
+from models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
 
 from django.conf import settings
 from django.shortcuts import reverse
@@ -14,7 +14,6 @@ from django_cron import CronJobBase, Schedule
 
 
 class resend_email(CronJobBase):
-
     schedule = Schedule(run_every_mins=60)
     code = 'application.resend_email'
 
@@ -23,7 +22,7 @@ class resend_email(CronJobBase):
         log.info('Checking for household member health checks not completed in the last 5 days')
         five_days_ago = datetime.now() - timedelta(days=5)
         expired_resends = list(
-            models.AdultInHome.objects.exclude(health_check_status='Done').filter(email_resent__lte=five_days_ago))
+            AdultInHome.objects.exclude(health_check_status='Done').filter(email_resent__lte=five_days_ago))
 
         for resend in expired_resends:
             application = Application.objects.get(pk=resend.application_id)

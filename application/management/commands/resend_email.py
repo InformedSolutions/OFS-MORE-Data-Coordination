@@ -1,10 +1,8 @@
-import logging
 import random
 import string
 
-from application import models
-from application.notify import send_email
-from models import Application, ApplicantPersonalDetails, ApplicantName
+from notify import send_email
+from models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
 
 from django.conf import settings
 from django.shortcuts import reverse
@@ -19,9 +17,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         five_days_ago = datetime.now() - timedelta(days=5)
 
-        test_model = list(models.AdultInHome.objects.filter(date_updated__lte=five_days_ago))
+        test_model = list(AdultInHome.objects.filter(date_updated__lte=five_days_ago))
         for model in test_model:
-            application = Application.objects.get(pk=resend.application_id)
+            application = Application.objects.get(pk=model.application_id)
             applicant = ApplicantPersonalDetails.objects.get(application_id=application)
             applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
             if applicant_name_record.middle_names != '':
@@ -29,7 +27,6 @@ class Command(BaseCommand):
             elif applicant_name_record.middle_names == '':
                 applicant_name = applicant_name_record.first_name + ' ' + applicant_name_record.last_name
             print(str(datetime.now()) + ' - Resending e-mail: ' + str(model.pk))
-            log.info(str(datetime.now()) + ' - Resending e-mail: ' + str(model.pk))
             template_id = '5bbf3677-49e9-47d0-acf2-55a9a03d8242'
             email = model.email
             model.token = ''.join([random.choice(string.digits[1:]) for n in range(7)])
