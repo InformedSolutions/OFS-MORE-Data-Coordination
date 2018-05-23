@@ -61,6 +61,7 @@ class AdultInHome(models.Model):
     def get_id(cls, app_id):
         return cls.objects.get(application_id=app_id)
 
+    # Date of birth property created to keep DRY
     @property
     def date_of_birth(self):
         return datetime(year=self.birth_year, month=self.birth_month, day=self.birth_day)
