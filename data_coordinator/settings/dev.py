@@ -32,8 +32,6 @@ DATABASES = {
 MIDDLEWARE = MIDDLEWARE + MIDDLEWARE_DEV
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + DEV_APPS + PROJECT_APPS
 
-SECRET_KEY = '-asdasdsad322432maq#j23432*&(*&DASl6#mhak%8rbh$px8e&9c6b9@c7df=m'
-
 # Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
 LOGGING = {
   'version': 1,

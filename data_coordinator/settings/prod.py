@@ -27,8 +27,6 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT', '5432')
     }
 }
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l^fle)2fs3k6r2aqmh)v1@$1#=cs5v28n*+=0z=4el067i6&pf'
 
 # Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
 LOGGING = {
