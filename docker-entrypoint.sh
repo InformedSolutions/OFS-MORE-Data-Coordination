@@ -7,6 +7,7 @@ python manage.py migrate django_cron --settings=$PROJECT_SETTINGS
 
 # Start Cron Job defined in docker file
 echo "Starting cron"
+printenv > /etc/environment
 nohup cron -f & 
 
 # Start server

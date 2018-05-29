@@ -1,22 +1,22 @@
 from .base import *
-import os
 
 DEBUG = True
 
-PUBLIC_APPLICATION_URL = 'http://localhost:8000/childminder'
-INTERNAL_IPS = "127.0.0.1"
-
+ALLOWED_HOSTS = ['*']
 
 DEV_APPS = [
-  'debug_toolbar'
+    'debug_toolbar',
 ]
 
 MIDDLEWARE_DEV = [
-  'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+MIDDLEWARE = MIDDLEWARE + MIDDLEWARE_DEV
+INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + DEV_APPS + PROJECT_APPS
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'fwzyivx(xxab@bz6g6!v&&qv69mcv^za-vrh@nj5k!61((2aof'
 
 DATABASES = {
     'default': {
@@ -27,39 +27,4 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST', '130.130.52.132'),
         'PORT': os.environ.get('POSTGRES_PORT', '5462')
     }
-}
-
-MIDDLEWARE = MIDDLEWARE + MIDDLEWARE_DEV
-INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + DEV_APPS + PROJECT_APPS
-
-SECRET_KEY = '-asdasdsad322432maq#j23432*&(*&DASl6#mhak%8rbh$px8e&9c6b9@c7df=m'
-
-# Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
-LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
-  'formatters': {
-    'console': {
-            # exact format is not important, this is the minimum information
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-        },
-        },
-  'handlers': {
-    'django.server': {
-        'level': 'INFO',
-        'class': 'logging.handlers.RotatingFileHandler',
-        'maxBytes': 1 * 1024 * 1024,
-        'filename': 'logs/output.log',
-        'formatter': 'console',
-        'maxBytes': 1 * 1024 * 1024,
-        'backupCount': '30'
-    },
-   },
-   'loggers': {
-     'django.server': {
-       'handlers': ['django.server'],
-         'level': 'INFO',
-           'propagate': True,
-      },
-    },
 }
