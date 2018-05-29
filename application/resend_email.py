@@ -26,12 +26,18 @@ class resend_email(CronJobBase):
         log.info(expired_resends)
         for resend in expired_resends:
             application = Application.objects.get(pk=resend.application_id.application_id)
-            applicant = ApplicantPersonalDetails.objects.get(application_id=application)
-            applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
-            if applicant_name_record.middle_names != '':
-                applicant_name = applicant_name_record.first_name + ' ' + applicant_name_record.middle_names + ' ' + applicant_name_record.last_name
-            elif applicant_name_record.middle_names == '':
-                applicant_name = applicant_name_record.first_name + ' ' + applicant_name_record.last_name
+            log.info(application)
+            if ApplicantPersonalDetails.objects.filter(application_id=application).count() > 0:
+                applicant = ApplicantPersonalDetails.objects.get(application_id=application)
+                applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
+                log.info(applicant_name_record)
+                if applicant_name_record.middle_names != '':
+                    applicant_name = applicant_name_record.first_name + ' ' + applicant_name_record.middle_names + ' ' + applicant_name_record.last_name
+                elif applicant_name_record.middle_names == '':
+                    applicant_name = applicant_name_record.first_name + ' ' + applicant_name_record.last_name
+            elif ApplicantPersonalDetails.objects.filter(application_id=application).count() == 0:
+                applicant_name = 'An applicant'
+            log.info(applicant_name)
             log.info(str(datetime.now()) + ' - Resending e-mail: ' + str(resend.pk))
             template_id = '5bbf3677-49e9-47d0-acf2-55a9a03d8242'
             email = resend.email
@@ -45,7 +51,7 @@ class resend_email(CronJobBase):
                                "ApplicantName": applicant_name}
             log.info(personalisation['link'])
             r = send_email(email, personalisation, template_id)
-            log.info('E-mail resent: ' + r)
+            log.info(r)
             email_resent = resend.email_resent
             if email_resent is not None:
                 if email_resent >= 1:

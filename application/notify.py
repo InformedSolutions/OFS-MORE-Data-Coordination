@@ -24,7 +24,6 @@ def send_email(email, personalisation, template_id):
     """
     log = logging.getLogger('django.server')
     base_request_url = settings.NOTIFY_URL
-    log.info(base_request_url)
     header = {'content-type': 'application/json'}
 
     # If executing function in test mode override email address
