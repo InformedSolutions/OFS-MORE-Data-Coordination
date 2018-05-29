@@ -18,9 +18,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # Automatic deletion frequency is done in minutes
 AUTOMATIC_DELETION_FREQUENCY = 120
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Base URL of notify gateway
+NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
+
+PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
+
+EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
+
 
 # Application definition
 
@@ -50,7 +60,8 @@ MIDDLEWARE = [
 ]
 
 CRON_CLASSES = [
-    "application.automatic_deletion.automatic_deletion"
+    "application.automatic_deletion.automatic_deletion",
+    "application.resend_email.resend_email"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
