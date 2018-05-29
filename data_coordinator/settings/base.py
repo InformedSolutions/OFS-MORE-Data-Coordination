@@ -52,7 +52,8 @@ MIDDLEWARE = [
 ]
 
 CRON_CLASSES = [
-    "application.automatic_deletion.automatic_deletion"
+    "application.automatic_deletion.automatic_deletion",
+    "application.resend_email.resend_email"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
