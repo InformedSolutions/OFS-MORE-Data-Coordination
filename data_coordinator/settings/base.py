@@ -24,6 +24,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Base URL of notify gateway
+NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
+
+PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
+
+EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
+
+
 # Application definition
 
 BUILTIN_APPS = [
