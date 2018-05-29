@@ -13,7 +13,7 @@ from django_cron import CronJobBase, Schedule
 
 class resend_email(CronJobBase):
 
-    schedule = Schedule(run_every_mins=0.01)
+    schedule = Schedule(run_every_mins=1)
     code = 'application.resend_email'
 
     def do(self):
