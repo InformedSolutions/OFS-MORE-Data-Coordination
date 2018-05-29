@@ -136,6 +136,7 @@ class Application(models.Model):
     date_accepted = models.DateTimeField(blank=True, null=True)
     order_code = models.UUIDField(blank=True, null=True)
     date_submitted = models.DateTimeField(blank=True, null=True)
+    ofsted_visit_email_sent = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         db_table = 'APPLICATION'
