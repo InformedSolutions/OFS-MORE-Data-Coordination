@@ -20,6 +20,8 @@ class delayed_email(CronJobBase):
 
     email = str('email')
 
+    Application.objects.filter(pub_date__year=2006)
+
     # HEALTH
     template_id = '2cd5f1c5-4900-4922-a627-a0d1f674136b'
     # DBS as well
