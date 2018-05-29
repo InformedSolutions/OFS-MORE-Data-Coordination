@@ -13,6 +13,4 @@ class Command(BaseCommand):
 
         test_model = list(models.Application.objects.filter(date_updated__lte=ten_days_ago))
         for model in test_model:
-
-            model.delete()
-            self.stdout.write((str(datetime.now()) + ' - Deleted application: ' + str(model.pk)))
+            print('send email after n amount of days')

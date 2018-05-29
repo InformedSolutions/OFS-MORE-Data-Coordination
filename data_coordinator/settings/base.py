@@ -19,6 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 AUTOMATIC_DELETION_FREQUENCY = 120
 
 DELAYED_EMAIL_FREQUENCY = 120
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,7 +53,8 @@ MIDDLEWARE = [
 ]
 
 CRON_CLASSES = [
-    "application.automatic_deletion.automatic_deletion"
+    "application.automatic_deletion.automatic_deletion",
+    "application.resend_email.resend_email",
     "application.delayed_email.delayed_email"
 ]
 
