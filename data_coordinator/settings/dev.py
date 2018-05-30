@@ -18,6 +18,9 @@ INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + DEV_APPS + PROJECT_APPS
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'fwzyivx(xxab@bz6g6!v&&qv69mcv^za-vrh@nj5k!61((2aof'
 
+# Override default url for local dev
+PUBLIC_APPLICATION_URL = 'http://localhost:8000/childminder'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

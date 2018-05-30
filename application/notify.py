@@ -6,7 +6,7 @@ OFS-MORE-CCN3: Apply to be a Childminder Beta
 
 Handler for dispatching email notifications via the GOV.UK notify gateway api.
 """
-
+import logging
 import json
 
 import requests
@@ -22,7 +22,7 @@ def send_email(email, personalisation, template_id):
     :return: :class:`Response <Response>` object containing http request response
     :rtype: requests.Response
     """
-
+    log = logging.getLogger('django.server')
     base_request_url = settings.NOTIFY_URL
     header = {'content-type': 'application/json'}
 
