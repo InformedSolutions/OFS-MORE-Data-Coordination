@@ -25,22 +25,22 @@ class delayed_email(CronJobBase):
         log.info('Checking for delayed emails')
         for email_type in emails:
             for email in emails[email_type]:
-                log.info(str(datetime.now('Europe/London')) + ' - delayed_email: Sending' + email_type + ' for Application ID: ' + str(email['application_id']))
+                log.info(str(datetime.now()) + ' - delayed_email: Sending' + email_type + ' for Application ID: ' + str(email['application_id']))
                 r = notify.send_email(email['email'], email['personalisation'], email['template_id'])
                 log.info(r.content)
                 if r.status_code == 201:
-                    log.info(str(datetime.now('Europe/London')) + ' - delayed_email: Sent ' + email_type + ' successfully for Application ID: ' + str(email['application_id']))
+                    log.info(str(datetime.now()) + ' - delayed_email: Sent ' + email_type + ' successfully for Application ID: ' + str(email['application_id']))
                     application = Application.objects.get(application_id=email['application_id'])
-                    application.ofsted_visit_email_sent = datetime.now('Europe/London')
+                    application.ofsted_visit_email_sent = datetime.now()
                     application.save()
                 else:
-                    log.info(str(datetime.no('Europe/London')) + ' - delayed_email: Failed Sending ' + email_type + ' succesfully for Application ID: ' + str(
+                    log.info(str(datetime.now()) + ' - delayed_email: Failed Sending ' + email_type + ' succesfully for Application ID: ' + str(
                         email['application_id']) + 'response.status_code: ' + r.status_code)
 
     def ofsted_visit_emails(self):
         ove_application_emails = []
-        four_days_ago = datetime.now('Europe/London') - timedelta(days=0)
-        ten_days_ago = datetime.now('Europe/London') - timedelta(days=10)
+        four_days_ago = datetime.now() - timedelta(days=0)
+        ten_days_ago = datetime.now() - timedelta(days=10)
         applications = Application.objects.all()
         completed_applications = Application.objects.filter(application_status='SUBMITTED')
         ofsted_visit_emails_applications = completed_applications.exclude(
