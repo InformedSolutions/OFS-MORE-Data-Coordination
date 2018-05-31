@@ -7,19 +7,15 @@ from .models import CriminalRecordCheck
 from .models import UserDetails
 from data_coordinator import settings
 from datetime import datetime, timedelta
-from application.notify import send_email
+from application import notify
 
 from django_cron import CronJobBase, Schedule
 
 
 class delayed_email(CronJobBase):
 
-    RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQUENCY
-
+    RUN_EVERY_MINS = settings.DELAYED_EMAIL_FREQUENCY
     schedule = Schedule(run_every_mins=1)
-
-    print('checking for delayed email confirmations')
-
     code = 'application.delayed_email'
     
     def do(self):
@@ -29,16 +25,23 @@ class delayed_email(CronJobBase):
         log.info('Checking for delayed emails')
         for email_type in emails:
             for email in emails[email_type]:
-                print(email['template_id'])
-                sent = send_email(email['email'], email['personalisation'], email['template_id'])
-                print(sent)
-                print(str(datetime.now()) + ' - Sending Delayed Email: ' + str(submission.pk))
-                log.info(str(datetime.now()) + ' - Sending Delayed Email: ' + str(submission.pk))
+                log.info(str(datetime.now()) + ' - Sending ' + email_type + ' for Application ID: ' + str(email['application_id']))
+                r = notify.send_email(email['email'], email['personalisation'], email['template_id'])
+                print(r.content)
+                print(r.status_code)
+                if r.status_code == 201:
+                    log.info(str(datetime.now()) + ' - Sent ' + email_type + ' succesfully for Application ID: ' + str(email['application_id']))
+                    application = Application.objects.get(email['application_id'])
+                    application.ofsted_visit_email_sent = True
+                    application.save()
+                else:
+                    log.info(str(datetime.now()) + ' - Failed Sendind ' + email_type + ' succesfully for Application ID: ' + str(
+                        email['application_id']) + 'response.status_code: ' + r.status_code + 'response.content: ' + r.content)
+                # print(str(datetime.now()) + ' - Sending Delayed Email: ' + str(submission.pk))
 
-        # notify.send_email(email, personalisation, template_id)
     def ofsted_visit_emails(self):
         ove_application_emails = []
-        four_days_ago = datetime.now() - timedelta(days=0)
+        four_days_ago = datetime.now() - timedelta(days=4)
         ten_days_ago = datetime.now() - timedelta(days=10)
         applications = Application.objects.all()
         for application in applications:
