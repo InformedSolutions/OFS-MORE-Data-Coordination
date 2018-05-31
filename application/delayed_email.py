@@ -20,24 +20,22 @@ class delayed_email(CronJobBase):
     
     def do(self):
         emails = {}
-        emails['ofsted_visit_emails'] = self.ofsted_visit_emails()
+        emails['ofsted_visit_email'] = self.ofsted_visit_emails()
         log = logging.getLogger('django.server')
         log.info('Checking for delayed emails')
         for email_type in emails:
             for email in emails[email_type]:
                 log.info(str(datetime.now()) + ' - Sending ' + email_type + ' for Application ID: ' + str(email['application_id']))
                 r = notify.send_email(email['email'], email['personalisation'], email['template_id'])
-                print(r.content)
-                print(r.status_code)
+                log.info(r.content)
                 if r.status_code == 201:
-                    log.info(str(datetime.now()) + ' - Sent ' + email_type + ' succesfully for Application ID: ' + str(email['application_id']))
+                    log.info(str(datetime.now()) + ' - Sent ' + email_type + ' successfully for Application ID: ' + str(email['application_id']))
                     application = Application.objects.get(email['application_id'])
                     application.ofsted_visit_email_sent = True
                     application.save()
                 else:
-                    log.info(str(datetime.now()) + ' - Failed Sendind ' + email_type + ' succesfully for Application ID: ' + str(
-                        email['application_id']) + 'response.status_code: ' + r.status_code + 'response.content: ' + r.content)
-                # print(str(datetime.now()) + ' - Sending Delayed Email: ' + str(submission.pk))
+                    log.info(str(datetime.now()) + ' - Failed Sending ' + email_type + ' succesfully for Application ID: ' + str(
+                        email['application_id']) + 'response.status_code: ' + r.status_code)
 
     def ofsted_visit_emails(self):
         ove_application_emails = []
