@@ -35,8 +35,7 @@ class delayed_email(CronJobBase):
                     application.ofsted_visit_email_sent = datetime.now()
                     application.save()
                 else:
-                    log.info(' - delayed_email: Failed Sending ' + email_type + ' succesfully for Application ID: ' + str(
-                        email['application_id']) + 'response.status_code: ' + r.status_code)
+                    log.warning(' - delayed_email: Failed Sending ' + email_type + ' succesfully for Application ID: ' + str(email['application_id']) + ' - status code:' + str(r.status_code))
 
     def ofsted_visit_emails(self):
         ove_application_emails = []
