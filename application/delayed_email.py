@@ -17,10 +17,6 @@ class delayed_email(CronJobBase):
     RUN_EVERY_MINS = settings.DELAYED_EMAIL_FREQUENCY
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'application.delayed_email'
-    applications = Application.objects.all()
-    for application in applications:
-        application.ofsted_visit_email_sent = None
-        application.save()
 
     def do(self):
         emails = {}
