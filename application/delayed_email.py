@@ -15,7 +15,7 @@ from django_cron import CronJobBase, Schedule
 class delayed_email(CronJobBase):
 
     RUN_EVERY_MINS = settings.DELAYED_EMAIL_FREQUENCY
-    schedule = Schedule(run_every_mins=1)
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'application.delayed_email'
     applications = Application.objects.all()
     for application in applications:
@@ -43,7 +43,7 @@ class delayed_email(CronJobBase):
 
     def ofsted_visit_emails(self):
         ove_application_emails = []
-        ten_days_ago = datetime.now() - timedelta(days=0)
+        ten_days_ago = datetime.now() - timedelta(days=10)
         completed_applications = Application.objects.filter(application_status='SUBMITTED')
         ofsted_visit_emails_applications = completed_applications.exclude(
             ofsted_visit_email_sent__isnull=False).filter(date_submitted__lte=ten_days_ago)
@@ -66,11 +66,3 @@ class delayed_email(CronJobBase):
             ove_application_email['personalisation'] = {'first_name': first_name, 'ref': reference}
             ove_application_emails.append(ove_application_email)
         return ove_application_emails
-
-class ofsted_visit_email():
-
-    email = ''
-    personalisation = ''
-    template_id = ''
-
-
