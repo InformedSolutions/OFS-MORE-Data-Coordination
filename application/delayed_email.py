@@ -26,16 +26,16 @@ class delayed_email(CronJobBase):
         log.info('Checking for delayed emails')
         for email_type in emails:
             for email in emails[email_type]:
-                log.info(' - delayed_email: Sending ' + email_type + ' for Application ID: ' + str(email['application_id']))
+                log.info('delayed_email: Sending ' + email_type + ' for Application ID: ' + str(email['application_id']))
                 r = notify.send_email(email['email'], email['personalisation'], email['template_id'])
-                log.info(' - delayed_email: response.content = ' + str(r.content))
+                log.info('delayed_email: response.content = ' + str(r.content))
                 if r.status_code == 201:
-                    log.info(' - delayed_email: Sent ' + email_type + ' successfully for Application ID: ' + str(email['application_id']))
+                    log.info('delayed_email: Sent ' + email_type + ' successfully for Application ID: ' + str(email['application_id']))
                     application = Application.objects.get(application_id=email['application_id'])
                     application.ofsted_visit_email_sent = datetime.now()
                     application.save()
                 else:
-                    log.warning(' - delayed_email: Failed Sending ' + email_type + ' successfully for Application ID: ' + str(email['application_id']) + ' - status code:' + str(r.status_code))
+                    log.warning('delayed_email: Failed Sending ' + email_type + ' successfully for Application ID: ' + str(email['application_id']) + ' - status code:' + str(r.status_code))
 
     def ofsted_visit_emails(self):
         ove_application_emails = []
