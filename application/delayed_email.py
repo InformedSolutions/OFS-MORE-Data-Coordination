@@ -25,6 +25,7 @@ class delayed_email(CronJobBase):
     def do(self):
         emails = {}
         emails['ofsted_visit_email'] = self.ofsted_visit_emails()
+        # to add other types of delayed email then create a def for that email type and assign it to the emails array
         log = logging.getLogger('django.server')
         log.info('Checking for delayed emails')
         for email_type in emails:
