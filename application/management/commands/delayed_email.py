@@ -36,4 +36,4 @@ class Command(BaseCommand):
             print(r)
             model.ofsted_visit_email_sent = datetime.now()
             model.save()
-            self.stdout.write((str(datetime.now()) + ' - Deleted application: ' + str(model.pk)))
+            self.stdout.write((str(datetime.now()) + ' - Email sent: ' + str(model.pk)))
