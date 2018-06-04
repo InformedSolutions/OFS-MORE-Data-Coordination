@@ -61,7 +61,8 @@ MIDDLEWARE = [
 
 CRON_CLASSES = [
     "application.automatic_deletion.automatic_deletion",
-    "application.resend_email.resend_email"
+    "application.resend_email.resend_email",
+    "application.delayed_email.delayed_email"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
@@ -88,10 +89,10 @@ WSGI_APPLICATION = 'data_coordinator.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
