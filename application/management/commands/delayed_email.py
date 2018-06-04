@@ -1,5 +1,5 @@
 from application.notify import send_email
-from application.models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
+from application.models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName, UserDetails
 
 from django.conf import settings
 
@@ -22,7 +22,7 @@ class Command(BaseCommand):
             applicant_name = applicant_name_record.first_name
             print(str(datetime.now()) + ' - Sending e-mail: ' + str(model.pk))
             template_id = '3de3b404-64fc-49a1-b01f-1d0607760c60'
-            email = model.email
+            email = UserDetails.objects.get(application_id=application).email
             base_url = settings.PUBLIC_APPLICATION_URL.replace('/childminder', '')
             documents_needed = base_url + '/documents-needed?id=' + str(model.application_id)
             home_ready = base_url + '/home-ready?id=' + str(model.application_id)
