@@ -16,7 +16,7 @@ class delayed_email(CronJobBase):
     def do(self):
         log = logging.getLogger('django.server')
         log.info('Checking for applications that have been submitted 10 days ago')
-        ten_days_ago = datetime.now() - timedelta(days=10)
+        ten_days_ago = datetime.now() - timedelta(days=0.0001)
         log.info(ten_days_ago)
         send_next_steps = list(
             Application.objects.filter(application_status='SUBMITTED', ofsted_visit_email_sent__lte=ten_days_ago))
