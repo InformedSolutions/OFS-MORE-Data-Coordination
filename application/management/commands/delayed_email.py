@@ -24,11 +24,14 @@ class Command(BaseCommand):
             template_id = '3de3b404-64fc-49a1-b01f-1d0607760c60'
             email = model.email
             base_url = settings.PUBLIC_APPLICATION_URL.replace('/childminder', '')
-            personalisation = {"documents-needed": base_url + '/documents-needed?id=' + model.application_id,
-                               "home-ready": base_url + '/home-ready?id=' + model.application_id,
-                               "prepare-interview": base_url + '/prepare-interview?id=' + model.application_id,
-                               "firstName": applicant_name,
-                               "ref": application.application_reference}
+            documents_needed = base_url + '/documents-needed?id=' + str(model.application_id)
+            home_ready = base_url + '/home-ready?id=' + str(model.application_id)
+            prepare_interview = base_url + '/prepare-interview?id=' + str(model.application_id)
+            personalisation = {"ref": str(model.application_reference),
+                               "first_name": applicant_name,
+                               "documents_needed": documents_needed,
+                               "home_ready": home_ready,
+                               "prepare_interview": prepare_interview}
             r = send_email(email, personalisation, template_id)
             print(r)
             model.ofsted_visit_email_sent = datetime.now()
