@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Send e-mail with next steps 10 days after the application has been submitted'
 
     def handle(self, *args, **options):
-        ten_days_ago = datetime.now() - timedelta(days=10)
+        ten_days_ago = datetime.now() - timedelta(days=0.0001)
 
         test_model = list(
             Application.objects.filter(application_status='SUBMITTED', ofsted_visit_email_sent=ten_days_ago))
