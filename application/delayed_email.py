@@ -19,7 +19,7 @@ class delayed_email(CronJobBase):
         ten_days_ago = datetime.now() - timedelta(days=0.0001)
         log.info(ten_days_ago)
         send_next_steps = list(
-            Application.objects.filter(application_status='SUBMITTED', ofsted_visit_email_sent__lte=ten_days_ago))
+            Application.objects.filter(application_status='ACCEPTED', ofsted_visit_email_sent__lte=ten_days_ago))
         log.info(send_next_steps)
         for send in send_next_steps:
             application = Application.objects.get(pk=send.application_id)
