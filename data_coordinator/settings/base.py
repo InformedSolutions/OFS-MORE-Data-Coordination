@@ -60,7 +60,6 @@ MIDDLEWARE = [
 ]
 
 CRON_CLASSES = [
-    "application.automatic_deletion.automatic_deletion",
     "application.resend_email.resend_email",
     "application.delayed_email.delayed_email"
 ]
