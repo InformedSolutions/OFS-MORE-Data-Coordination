@@ -14,16 +14,26 @@ class delayed_email(CronJobBase):
     code = 'application.delayed_email'
 
     def do(self):
+        """
+        Function for sending a reminder email detailing next steps to an applicant
+        """
         log = logging.getLogger('django.server')
         log.info('Checking for applications that have been submitted 10 days ago')
-        ten_days_ago = datetime.now() - timedelta(days=0.0001)
-        log.info(ten_days_ago)
+        time_interval_setting_value=int(settings.REMINDER_EMAIL_FREQUENCY)
+        next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
+
+        log.info(next_steps_send_email_threshold)
         send_next_steps = list(
-            Application.objects.filter(application_status='ACCEPTED', ofsted_visit_email_sent__lte=ten_days_ago))
+            Application.objects.filter(application_status='ACCEPTED',
+                                       ofsted_visit_email_sent__lte=next_steps_send_email_threshold
+                                       )
+        )
         log.info(send_next_steps)
+
         for send in send_next_steps:
             application = Application.objects.get(pk=send.application_id)
             log.info(application)
+
             if ApplicantPersonalDetails.objects.filter(application_id=application).count() > 0:
                 applicant = ApplicantPersonalDetails.objects.get(application_id=application)
                 applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
@@ -31,6 +41,7 @@ class delayed_email(CronJobBase):
                 applicant_name = applicant_name_record.first_name
             else:
                 applicant_name = 'applicant'
+
             log.info(applicant_name)
             log.info(str(datetime.now()) + ' - Sending next steps: ' + str(send.pk))
             template_id = '3de3b404-64fc-49a1-b01f-1d0607760c60'
@@ -47,6 +58,7 @@ class delayed_email(CronJobBase):
                                "documents_needed": documents_needed,
                                "home_ready": home_ready,
                                "prepare_interview": prepare_interview}
+
             log.info(personalisation)
             r = send_email(email, personalisation, template_id)
             log.info(r)
