@@ -19,7 +19,7 @@ class delayed_email(CronJobBase):
         """
         log = logging.getLogger('django.server')
         log.info('Checking for applications that have been submitted 10 days ago')
-        time_interval_setting_value=int(settings.REMINDER_EMAIL_FREQUENCY)
+        time_interval_setting_value=int(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
         next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
 
         log.info(next_steps_send_email_threshold)
