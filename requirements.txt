@@ -2,5 +2,5 @@ django==1.11.10
 psycopg2-binary==2.7.4
 unittest-xml-reporting==1.11.0
 requests==2.18.4
-django_cron==0.5.1
+django_cron
 django-debug-toolbar==1.9.1
