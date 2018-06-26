@@ -7,6 +7,7 @@ WORKDIR /source
 ADD . /source/
 RUN pip install -r requirements.txt
 
+RUN apt-get update -y
 RUN apt-get install -y cron
 ADD crontab /etc/cron.d/deletion
 RUN chmod 0644 /etc/cron.d/deletion
