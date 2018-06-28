@@ -15,4 +15,5 @@ RUN crontab /etc/cron.d/deletion
 RUN touch /var/log/cron.log
 
 RUN chmod +x /source/docker-entrypoint.sh
+RUN chmod +x /source/cronbash.sh
 CMD ["/source/docker-entrypoint.sh"]
