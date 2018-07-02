@@ -13,7 +13,6 @@ ADD crontab /etc/cron.d/deletion
 RUN chmod 0644 /etc/cron.d/deletion
 RUN crontab /etc/cron.d/deletion
 RUN touch /var/log/cron.log
-RUN mkdir /logs
 
 RUN chmod +x /source/docker-entrypoint.sh
 RUN chmod +x /source/cronbash.sh
