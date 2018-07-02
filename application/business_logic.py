@@ -3,6 +3,8 @@ from .models import AdultInHome, Application
 
 from django.conf import settings
 
+import logging
+
 
 def generate_expired_resends():
     """
@@ -25,6 +27,10 @@ def find_accepted_applications():
     """
     time_interval_setting_value = int(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
     next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
+
+    log = logging.getLogger('django.server')
+    log.info('Time logging interval:' + str(time_interval_setting_value))
+    log.info('Next steps send email threshold:' + str(next_steps_send_email_threshold))
     send_next_steps = list(
         Application.objects.filter(application_status='ACCEPTED',
                                    date_accepted__lte=next_steps_send_email_threshold
