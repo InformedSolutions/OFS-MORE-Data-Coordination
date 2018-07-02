@@ -12,7 +12,7 @@ from django.conf import settings
 from django_cron import CronJobBase, Schedule
 
 
-class resend_email(CronJobBase):
+class ResendEmail(CronJobBase):
 
     schedule = Schedule(run_every_mins=1)
     code = 'application.resend_email'

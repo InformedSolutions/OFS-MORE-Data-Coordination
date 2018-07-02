@@ -9,7 +9,7 @@ from django.conf import settings
 from django_cron import CronJobBase, Schedule
 
 
-class delayed_email(CronJobBase):
+class DelayedEmail(CronJobBase):
 
     schedule = Schedule(run_every_mins=1)
     code = 'application.delayed_email'
