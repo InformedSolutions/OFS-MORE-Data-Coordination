@@ -64,11 +64,47 @@ class DataCoordinatorTests(TestCase):
             email_resent=0,
             email_resent_timestamp=datetime.now(pytz.utc) - timedelta(10)
         )
+        test_adult_id_2 = '166f77f7-c2ee-4550-9461-45b9d2f28d33'
+        adult_record_2 = AdultInHome.objects.create(
+            adult_id=(UUID(test_adult_id_2)),
+            application_id=application,
+            adult=1,
+            first_name='',
+            middle_names='',
+            last_name='',
+            birth_day=0,
+            birth_month=0,
+            birth_year=0,
+            relationship='',
+            dbs_certificate_number=0,
+            health_check_status='Done',
+            email_resent=0,
+            email_resent_timestamp=datetime.now(pytz.utc) - timedelta(10)
+        )
+        test_adult_id_3 = '166f77f7-c2ee-4550-9461-45b9d2f28d32'
+        adult_record_3 = AdultInHome.objects.create(
+            adult_id=(UUID(test_adult_id_3)),
+            application_id=application,
+            adult=1,
+            first_name='',
+            middle_names='',
+            last_name='',
+            birth_day=0,
+            birth_month=0,
+            birth_year=0,
+            relationship='',
+            dbs_certificate_number=0,
+            health_check_status='Flagged',
+            email_resent=0,
+            email_resent_timestamp=datetime.now(pytz.utc) - timedelta(10)
+        )
         expired_resends = generate_expired_resends()
         assert (len(expired_resends) == 1)
         application.delete()
         user_record.delete()
         adult_record.delete()
+        adult_record_2.delete()
+        adult_record_3.delete()
 
     def test_resend_email_not_expired(self):
         """
