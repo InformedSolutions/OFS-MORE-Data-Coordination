@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
 from django.test import TestCase
 from uuid import UUID
 
-from ..business_logic import generate_expired_resends
+from ..business_logic import generate_expired_resends, find_accepted_applications
 from ..models import AdultInHome, Application, UserDetails
 from ..resend_email import *
 
@@ -129,3 +130,52 @@ class DataCoordinatorTests(TestCase):
         application.delete()
         user_record.delete()
         adult_record.delete()
+
+    def test_find_accepted_applications(self):
+        """
+        Test to check find accepted applications logic
+        """
+        test_application_id = 'f8c42666-1367-4878-92e2-1cee6ebcb48c'
+        test_application_id_2 = 'f8c42666-1367-4878-92e2-1cee6ebcb48b'
+        application = Application.objects.create(
+            application_id=(UUID(test_application_id)),
+            application_type='CHILDMINDER',
+            application_status='ACCEPTED',
+            cygnum_urn='',
+            login_details_status='COMPLETED',
+            personal_details_status='NOT_STARTED',
+            childcare_type_status='COMPLETED',
+            first_aid_training_status='COMPLETED',
+            eyfs_training_status='COMPLETED',
+            criminal_record_check_status='COMPLETED',
+            health_status='COMPLETED',
+            references_status='COMPLETED',
+            people_in_home_status='COMPLETED',
+            declarations_status='COMPLETED',
+            date_created=datetime.today(),
+            date_updated=datetime.today(),
+            date_accepted=datetime.today() - timedelta(11)
+        )
+        application2 = Application.objects.create(
+            application_id=(UUID(test_application_id_2)),
+            application_type='CHILDMINDER',
+            application_status='ACCEPTED',
+            cygnum_urn='',
+            login_details_status='COMPLETED',
+            personal_details_status='NOT_STARTED',
+            childcare_type_status='COMPLETED',
+            first_aid_training_status='COMPLETED',
+            eyfs_training_status='COMPLETED',
+            criminal_record_check_status='COMPLETED',
+            health_status='COMPLETED',
+            references_status='COMPLETED',
+            people_in_home_status='COMPLETED',
+            declarations_status='COMPLETED',
+            date_created=datetime.today(),
+            date_updated=datetime.today(),
+            date_accepted=datetime.today()
+        )
+        send_next_steps = find_accepted_applications()
+        assert (len(send_next_steps) == 1)
+        application.delete()
+        application2.delete()

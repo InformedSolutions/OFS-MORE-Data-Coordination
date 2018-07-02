@@ -4,8 +4,8 @@ import string
 import pytz
 
 from .notify import send_email
-from datetime import datetime, timedelta
-from .models import AdultInHome, Application, ApplicantPersonalDetails, ApplicantName
+from datetime import datetime
+from .models import Application, ApplicantPersonalDetails, ApplicantName
 from .business_logic import generate_expired_resends
 
 from django.conf import settings

@@ -1,8 +1,9 @@
 import logging
 
 from .notify import send_email
-from datetime import datetime, timedelta
+from datetime import datetime
 from .models import Application, ApplicantPersonalDetails, ApplicantName, UserDetails
+from .business_logic import find_accepted_applications
 
 from django.conf import settings
 from django_cron import CronJobBase, Schedule
@@ -18,16 +19,8 @@ class delayed_email(CronJobBase):
         Function for sending a reminder email detailing next steps to an applicant
         """
         log = logging.getLogger('django.server')
-        log.info('Checking for applications that have been submitted 10 days ago')
-        time_interval_setting_value=int(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
-        next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
-
-        log.info(next_steps_send_email_threshold)
-        send_next_steps = list(
-            Application.objects.filter(application_status='ACCEPTED',
-                                       ofsted_visit_email_sent__lte=next_steps_send_email_threshold
-                                       )
-        )
+        log.info('Checking for applications that have been accepted 10 days ago')
+        send_next_steps = find_accepted_applications()
         log.info(send_next_steps)
 
         for send in send_next_steps:
@@ -65,4 +58,3 @@ class delayed_email(CronJobBase):
             send.ofsted_visit_email_sent = datetime.now()
             send.save()
             log.info(send.ofsted_visit_email_sent)
-
