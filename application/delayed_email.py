@@ -25,7 +25,7 @@ class delayed_email(CronJobBase):
 
         for send in send_next_steps:
             application = Application.objects.get(pk=send.application_id)
-            log.info(application)
+            log.info(application.application_id)
 
             if ApplicantPersonalDetails.objects.filter(application_id=application).count() > 0:
                 applicant = ApplicantPersonalDetails.objects.get(application_id=application)

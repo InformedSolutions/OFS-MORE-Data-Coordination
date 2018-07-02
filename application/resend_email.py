@@ -25,7 +25,7 @@ class resend_email(CronJobBase):
         # For each adult record, resend the household member health check email
         for resend in expired_resends:
             application = Application.objects.get(pk=resend.application_id.application_id)
-            log.info(application)
+            log.info(application.application_id)
             applicant = ApplicantPersonalDetails.objects.get(application_id=application)
             applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
             log.info(applicant_name_record)

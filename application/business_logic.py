@@ -12,7 +12,8 @@ def generate_expired_resends():
     """
     five_days_ago = datetime.now() - timedelta(days=5)
     expired_resends = list(
-        AdultInHome.objects.exclude(health_check_status='Done').filter(email_resent_timestamp__lte=five_days_ago))
+        AdultInHome.objects.exclude(health_check_status='Done').exclude(health_check_status='Flagged').filter(
+            email_resent_timestamp__lte=five_days_ago))
 
     return expired_resends
 
