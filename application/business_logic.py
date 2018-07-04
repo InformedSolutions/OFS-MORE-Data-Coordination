@@ -27,7 +27,7 @@ def find_accepted_applications():
     """
     #time_interval_setting_value = int(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
     #next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
-    next_steps_send_email_threshold = datetime.now() - timedelta(days=0.0001)
+    next_steps_send_email_threshold = datetime.now() - timedelta(minutes=1)
 
     #log = logging.getLogger('django.server')
     #log.info('Time logging interval:' + str(time_interval_setting_value))
