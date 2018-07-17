@@ -117,7 +117,7 @@ LOGGING = {
         'level': 'INFO',
         'class': 'logging.handlers.RotatingFileHandler',
         'maxBytes': 1 * 1024 * 1024,
-        'filename': '/source/logs/output.log',
+        'filename': BASE_DIR + '/logs/output.log',
         'formatter': 'console',
         'maxBytes': 1 * 1024 * 1024,
         'backupCount': 30
