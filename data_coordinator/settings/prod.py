@@ -28,6 +28,10 @@ DATABASES = {
     }
 }
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '3w4&7wa%udc1hl6xsfep9=)jc3^5mk=f9e_643=z)d)7sjwiow'
+
+
 # Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
 LOGGING = {
   'version': 1,

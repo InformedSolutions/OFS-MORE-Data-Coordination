@@ -56,5 +56,5 @@ class DelayedEmail(CronJobBase):
                 send.ofsted_visit_email_sent = datetime.now()
                 send.save()
                 log.info(send.ofsted_visit_email_sent)
-        except:
-            print('Error')
+        except Exception as e:
+            log.info(e)

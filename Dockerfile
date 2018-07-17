@@ -1,4 +1,5 @@
 from python:3.5-slim
+ARG PROJECT_SETTINGS
 
 ENV PYTHONUNBUFFERED 1
 RUN apt-get update
