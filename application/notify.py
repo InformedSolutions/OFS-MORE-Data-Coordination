@@ -35,6 +35,7 @@ def send_email(email, personalisation, template_id):
         'personalisation': personalisation,
         'templateId': template_id
     }
+    log.info(notification_request)
     r = requests.post(base_request_url + '/api/v1/notifications/email/',
                       json.dumps(notification_request),
                       headers=header)

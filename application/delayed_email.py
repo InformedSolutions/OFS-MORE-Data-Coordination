@@ -50,7 +50,6 @@ class DelayedEmail(CronJobBase):
                                    "home_ready": home_ready,
                                    "prepare_interview": prepare_interview}
 
-                log.info(personalisation)
                 r = send_email(email, personalisation, template_id)
                 log.info(r)
                 send.ofsted_visit_email_sent = datetime.now()
