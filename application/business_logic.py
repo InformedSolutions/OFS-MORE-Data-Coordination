@@ -25,8 +25,11 @@ def find_accepted_applications():
     Method to return a list of accepted applications
     :return: list of Application records
     """
-    time_interval_setting_value = int(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
+    log = logging.getLogger('django.server')
+    time_interval_setting_value = float(settings.NEXT_STEPS_EMAIL_DELAY_IN_DAYS)
     next_steps_send_email_threshold = datetime.now() - timedelta(days=time_interval_setting_value)
+    log.info(time_interval_setting_value)
+    log.info(next_steps_send_email_threshold)
 
     send_next_steps = list(
         Application.objects.filter(application_status='ACCEPTED',
