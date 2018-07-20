@@ -21,12 +21,6 @@ AUTOMATIC_DELETION_FREQUENCY = 120
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 
@@ -124,7 +118,7 @@ LOGGING = {
     },
    },
    'loggers': {
-     '': {
+     'django.server': {
        'handlers': ['django.server'],
          'level': 'INFO',
            'propagate': True,
