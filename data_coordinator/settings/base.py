@@ -18,9 +18,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # Automatic deletion frequency is done in minutes
 AUTOMATIC_DELETION_FREQUENCY = 120
 
+# The interval after which an email detailing next steps is sent
+NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Base URL of notify gateway
+NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
+
+PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
+
+EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
+
 
 # Application definition
 
@@ -50,7 +57,8 @@ MIDDLEWARE = [
 ]
 
 CRON_CLASSES = [
-    "application.automatic_deletion.automatic_deletion"
+    "application.resend_email.ResendEmail",
+    "application.delayed_email.DelayedEmail"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
@@ -77,12 +85,43 @@ WSGI_APPLICATION = 'data_coordinator.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'formatters': {
+    'console': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+        },
+  'handlers': {
+    'django.server': {
+        'level': 'INFO',
+        'class': 'logging.handlers.RotatingFileHandler',
+        'maxBytes': 1 * 1024 * 1024,
+        'filename': BASE_DIR + '/logs/output.log',
+        'formatter': 'console',
+        'maxBytes': 1 * 1024 * 1024,
+        'backupCount': 30
+    },
+   },
+   'loggers': {
+     'django.server': {
+       'handlers': ['django.server'],
+         'level': 'INFO',
+           'propagate': True,
+      },
+    },
+}
