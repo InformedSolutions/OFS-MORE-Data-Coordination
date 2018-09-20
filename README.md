@@ -3,4 +3,4 @@
 Repository for automated Cron jobs:
 * Automatic deletion of draft applications that have not been updated in the last 90 days
 * Resending household member health check e-mail if the household member has not completed it after 5 days
-* Sending a next steps e-mail 10 days after an application has been accepted by ARC
+* Sending a next steps e-mail 10 days after an application has been accepted by ARC, only for applicants who do not exclusively apply to join the Childcare Register
