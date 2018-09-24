@@ -26,16 +26,13 @@ class DelayedEmail(CronJobBase):
 
             for send in send_next_steps:
                 application = Application.objects.get(pk=send.application_id)
-                log.info(application.application_id)
+                log.info('Application ID: ' + str(application.application_id))
 
                 applicant = ApplicantPersonalDetails.objects.get(application_id=application)
                 applicant_name_record = ApplicantName.objects.get(personal_detail_id=applicant)
-                log.info(applicant_name_record)
                 applicant_name = applicant_name_record.first_name
-                log.info(applicant_name)
 
                 childcare_type_record = ChildcareType.objects.get(application_id=application)
-                log.info(childcare_type_record)
 
                 # Only send What you need for Ofsted's visit e-mail if the applicant is not applying to the Childcare
                 # Register
@@ -61,6 +58,10 @@ class DelayedEmail(CronJobBase):
                     log.info(r)
                     send.ofsted_visit_email_sent = datetime.now()
                     send.save()
+                    log.info("Sending What you need for Ofsted's visit email")
                     log.info(send.ofsted_visit_email_sent)
+                else:
+                    log.info("Not sending What you need for Ofsted's visit email")
         except Exception as e:
             log.info(e)
+            raise e
