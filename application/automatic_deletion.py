@@ -18,7 +18,7 @@ class automatic_deletion(CronJobBase):
         log = logging.getLogger('django.server')
         log.info('Checking for expired applications')
         ninety_days_ago = datetime.now() - timedelta(days=90)
-        expired_submissions = list(Application.objects.exclude(application_status='COMPLETE').filter(date_updated__lte=ninety_days_ago))
+        expired_submissions = list(Application.objects.exclude(application_status='COMPLETE').filter(date_last_accessed__lte=ninety_days_ago))
 
         for submission in expired_submissions:
             print(str(datetime.now()) + ' - Deleting application: ' + str(submission.pk))
