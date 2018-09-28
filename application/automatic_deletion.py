@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from django_cron import CronJobBase, Schedule
 
 
-class gi(CronJobBase):
+class automatic_deletion(CronJobBase):
 
     RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQUENCY
 
