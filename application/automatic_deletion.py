@@ -1,36 +1,14 @@
 import logging
 
-from .models import (AdultInHome,
-                     ApplicantHomeAddress,
-                     ApplicantName,
-                     ApplicantPersonalDetails,
-                     Application,
-                     Arc,
-                     Child,
-                     ChildAddress,
-                     ChildInHome,
-                     ChildcareTraining,
-                     ChildcareType,
-                     CriminalRecordCheck,
-                     FirstAidTraining,
-                     HealthDeclarationBooklet,
-                     HealthCheckCurrent,
-                     HealthCheckHospital,
-                     HealthCheckSerious,
-                     OtherPersonPreviousRegistrationDetails,
-                     Payment,
-                     PreviousAddress,
-                     PreviousName,
-                     PreviousRegistrationDetails,
-                     Reference,
-                     UserDetails)
+from .models import Application
 from django.conf import settings
 from datetime import datetime, timedelta
 
 from django_cron import CronJobBase, Schedule
 
 
-class automatic_deletion(CronJobBase):
+class gi(CronJobBase):
+
     RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQUENCY
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
