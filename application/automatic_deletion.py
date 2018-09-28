@@ -42,7 +42,7 @@ class automatic_deletion(CronJobBase):
         ninety_days_ago = datetime.now() - timedelta(days=90)
         # Determine expired applications based on date last accessed
         expired_submissions = list(
-            Application.objects.exclude(application_status='SUBMITTED').filter(date_last_accessed__lte=ninety_days_ago))
+            Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=ninety_days_ago))
 
         for submission in expired_submissions:
             log.info(str(datetime.now()) + ' - Deleting application: ' + str(submission.pk))
