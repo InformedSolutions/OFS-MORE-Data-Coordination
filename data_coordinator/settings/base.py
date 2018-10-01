@@ -58,7 +58,8 @@ MIDDLEWARE = [
 
 CRON_CLASSES = [
     "application.resend_email.ResendEmail",
-    "application.delayed_email.DelayedEmail"
+    "application.delayed_email.DelayedEmail",
+    "application.automatic_deletion.automatic_deletion"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
