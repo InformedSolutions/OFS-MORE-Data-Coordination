@@ -4,6 +4,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Automatic deletion frequency is done in minutes
+AUTOMATIC_DELETION_FREQUENCY = 1
+
 DEV_APPS = [
     'debug_toolbar',
 ]
