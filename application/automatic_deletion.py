@@ -17,10 +17,10 @@ class automatic_deletion(CronJobBase):
     def do(self):
         log = logging.getLogger('django.server')
         log.info('Checking for expired applications')
-        ninety_days_ago = datetime.now() - timedelta(days=90)
+        expiry_threshold = datetime.now() - timedelta(days=settings.EXPIRY_THRESHOLD)
         # Determine expired applications based on date last accessed
         expired_submissions = list(
-            Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=ninety_days_ago))
+            Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=expiry_threshold))
 
         for submission in expired_submissions:
 
