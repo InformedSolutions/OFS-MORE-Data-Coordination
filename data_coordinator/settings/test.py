@@ -4,6 +4,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Automatic deletion frequency in minutes
+AUTOMATIC_DELETION_FREQUENCY = 2
+
+# Expiry threshold for applications in days
+EXPIRY_THRESHOLD = 1
+
 DEV_APPS = [
     'debug_toolbar',
 ]
