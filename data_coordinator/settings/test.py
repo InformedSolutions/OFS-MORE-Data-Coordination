@@ -8,7 +8,7 @@ ALLOWED_HOSTS = ['*']
 AUTOMATIC_DELETION_FREQUENCY = 2
 
 # Expiry threshold for applications in days
-EXPIRY_THRESHOLD = 1
+EXPIRY_THRESHOLD = 0.04
 
 DEV_APPS = [
     'debug_toolbar',
