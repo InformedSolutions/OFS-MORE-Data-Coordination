@@ -22,7 +22,7 @@ AUTOMATIC_DELETION_FREQUENCY = 120
 EXPIRY_THRESHOLD = 90
 
 # The interval after which an email detailing next steps is sent
-NEXT_STEPS_EMAIL_DELAY_IN_DAYS = 10
+NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.04)
 
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
