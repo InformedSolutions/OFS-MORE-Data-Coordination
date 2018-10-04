@@ -4,6 +4,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# The interval after which an email detailing next steps is sent
+NEXT_STEPS_EMAIL_DELAY_IN_DAYS = 0.0001
+
 DEV_APPS = [
     'debug_toolbar',
 ]
