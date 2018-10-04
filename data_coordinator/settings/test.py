@@ -10,9 +10,6 @@ AUTOMATIC_DELETION_FREQUENCY = 2
 # Expiry threshold for applications in days
 EXPIRY_THRESHOLD = 0.04
 
-# The interval after which an email detailing next steps is sent
-NEXT_STEPS_EMAIL_DELAY_IN_DAYS = 0.04
-
 DEV_APPS = [
     'debug_toolbar',
 ]
