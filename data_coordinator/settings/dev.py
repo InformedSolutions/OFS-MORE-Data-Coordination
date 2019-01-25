@@ -24,10 +24,10 @@ PUBLIC_APPLICATION_URL = 'http://localhost:8000/childminder'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
-        'USER': os.environ.get('POSTGRES_USER', 'ofsted'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'OfstedB3ta'),
-        'HOST': os.environ.get('POSTGRES_HOST', '130.130.52.132'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5462')
+        'NAME': os.environ.get('POSTGRES_DB', 'ofs'),
+        'USER': os.environ.get('POSTGRES_USER', 'ofs'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'ofs'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432')
     }
 }
