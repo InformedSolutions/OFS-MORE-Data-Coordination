@@ -1,4 +1,4 @@
-from python:3.5-slim
+from python:3.6-slim
 ARG PROJECT_SETTINGS
 
 ENV PYTHONUNBUFFERED 1
