@@ -20,14 +20,3 @@ SECRET_KEY = 'fwzyivx(xxab@bz6g6!v&&qv69mcv^za-vrh@nj5k!61((2aof'
 
 # Override default url for local dev
 PUBLIC_APPLICATION_URL = 'http://localhost:8000/childminder'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'ofs'),
-        'USER': os.environ.get('POSTGRES_USER', 'ofs'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'ofs'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432')
-    }
-}
