@@ -38,3 +38,13 @@ def find_accepted_applications():
                                    )
     )
     return send_next_steps
+
+def generate_expiring_applications_list():
+
+    '''Method to return a list of applications that have not been accessed in the last 55 days'''
+
+    due_expiry_email = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD)
+    expiring_applications = list(
+        Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=due_expiry_email)
+    )
+    return expiring_applications

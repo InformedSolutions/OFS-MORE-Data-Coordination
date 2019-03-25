@@ -19,7 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 AUTOMATIC_DELETION_FREQUENCY = 120
 
 # Expiry threshold for applications in days
-EXPIRY_THRESHOLD = 90
+EXPIRY_THRESHOLD = 60
+
+# Warning before expiry email threshold for applications in days
+WARNING_EMAIL_THRESHOLD = 55
 
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10)
