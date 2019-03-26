@@ -40,15 +40,17 @@ def find_accepted_applications():
     )
     return send_next_steps
 
+
 def generate_expiring_applications_list_cm_applications():
 
     '''Method to return a list of childminder applications that have not been accessed in the last 55 days'''
 
     due_expiry_email = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD)
     expiring_applications = list(
-        Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=due_expiry_email)
+        Application.objects.filter(application_status='DRAFTING', date_last_accessed=due_expiry_email)
     )
     return expiring_applications
+
 
 def generate_expiring_applications_list_nanny_applications():
 
@@ -56,8 +58,27 @@ def generate_expiring_applications_list_nanny_applications():
 
     due_expiry_email = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD)
     expiring_applications = list(
-                                NannyGatewayActions().list('application',
+                                NannyGatewayActions().list('nanny_application',
                                                            params={"application_status": 'DRAFTING',
-                                                                   "date_last_accessed__lte": due_expiry_email})
+                                                                   "date_last_accessed": due_expiry_email})
     )
     return expiring_applications
+
+
+def generate_list_of_expired_cm_applications():
+    expiry_threshold = datetime.now() - timedelta(days=settings.EXPIRY_THRESHOLD)
+        # Determine expired applications based on date last accessed
+    expired_submissions_cm = list(
+            Application.objects.filter(application_status='DRAFTING', date_last_accessed=expiry_threshold))
+
+    return expired_submissions_cm
+
+
+def generate_list_of_expired_nanny_applications():
+    expiry_threshold = datetime.now() - timedelta(days=settings.EXPIRY_THRESHOLD)
+    expired_submissions_nanny = list(
+            NannyGatewayActions().list('nanny_application',
+                                       params={"application_status": 'DRAFTING',
+                                               "date_last_accessed": expiry_threshold}))
+
+    return expired_submissions_nanny
