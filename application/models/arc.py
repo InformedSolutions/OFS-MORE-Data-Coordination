@@ -24,10 +24,8 @@ class Arc(models.Model):
     people_in_home_review = models.CharField(choices=TASK_STATUS, max_length=50, default='NOT_STARTED')
 
     # NannyApplication fields.
-    childcare_address_review = models.CharField(choices=TASK_STATUS, max_length=50, default='NOT_STARTED', blank=True,
-                                                null=True)
-    insurance_cover_review = models.CharField(choices=TASK_STATUS, max_length=50, default='NOT_STARTED', blank=True,
-                                              null=True)
+    childcare_address_review = models.CharField(choices=TASK_STATUS, max_length=50, default='NOT_STARTED', blank=True, null=True)
+    insurance_cover_review = models.CharField(choices=TASK_STATUS, max_length=50, default='NOT_STARTED', blank=True, null=True)
 
     @classmethod
     def get_id(cls, app_id):

@@ -22,7 +22,7 @@ AUTOMATIC_DELETION_FREQUENCY = 120
 EXPIRY_THRESHOLD = 60
 
 # Warning before expiry email threshold for applications in days
-WARNING_EMAIL_THRESHOLD = 55
+WARNING_EMAIL_THRESHOLD = os.environ.get('WARNING_EMAIL_THRESHOLD', 55)
 
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10)
@@ -33,7 +33,6 @@ NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
-
 
 # Application definition
 
@@ -87,6 +86,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'data_coordinator.wsgi.application'
+
+# Test outputs
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_VERBOSE = True
+TEST_OUTPUT_DESCRIPTIONS = True
+TEST_OUTPUT_DIR = 'xmlrunner'
+
+MIGRATION_MODULES = {'application': 'application.tests.test_migrations'}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
