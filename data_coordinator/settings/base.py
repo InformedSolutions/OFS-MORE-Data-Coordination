@@ -32,6 +32,12 @@ NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 
 PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
 
+# Base URL of nanny gateway
+APP_NANNY_GATEWAY_URL = os.environ.get('APP_NANNY_GATEWAY_URL')
+
+# Base URL of identity gateway
+APP_IDENTITY_URL = os.environ.get('APP_IDENTITY_URL')
+
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
 
 # Application definition
