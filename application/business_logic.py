@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from .models import AdultInHome, Application
+from application.services.db_gateways import NannyGatewayActions
 
 from django.conf import settings
 
@@ -39,12 +40,24 @@ def find_accepted_applications():
     )
     return send_next_steps
 
-def generate_expiring_applications_list():
+def generate_expiring_applications_list_cm_applications():
 
-    '''Method to return a list of applications that have not been accessed in the last 55 days'''
+    '''Method to return a list of childminder applications that have not been accessed in the last 55 days'''
 
     due_expiry_email = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD)
     expiring_applications = list(
         Application.objects.filter(application_status='DRAFTING', date_last_accessed__lte=due_expiry_email)
+    )
+    return expiring_applications
+
+def generate_expiring_applications_list_nanny_applications():
+
+    '''Method to return a list of nanny applications that have not been accessed in the last 55 days'''
+
+    due_expiry_email = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD)
+    expiring_applications = list(
+                                NannyGatewayActions().list('application',
+                                                           params={"application_status": 'DRAFTING',
+                                                                   "date_last_accessed__lte": due_expiry_email})
     )
     return expiring_applications

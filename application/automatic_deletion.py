@@ -2,11 +2,12 @@ import logging
 import random
 import string
 
-from application.business_logic import generate_expiring_applications_list
+from application.business_logic import generate_expiring_applications_list_cm_applications
 from application.notify import send_email
 from .models import Application, UserDetails, applicant_name
 from django.conf import settings
 from datetime import datetime, timedelta
+from application.services.db_gateways import NannyGatewayActions
 
 from django_cron import CronJobBase, Schedule
 
@@ -21,7 +22,7 @@ class automatic_deletion(CronJobBase):
     def do(self):
         log = logging.getLogger('django.server')
         log.info('Checking for expired  and expiring applications')
-        send_reminder = generate_expiring_applications_list()
+        send_reminder = generate_expiring_applications_list_cm_applications()
         expiry_threshold = datetime.now() - timedelta(days=settings.EXPIRY_THRESHOLD)
         # Determine expired applications based on date last accessed
         expired_submissions = list(
