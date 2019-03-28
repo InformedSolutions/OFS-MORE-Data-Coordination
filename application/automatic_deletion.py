@@ -2,87 +2,161 @@ import logging
 import random
 import string
 
+from django_cron import CronJobBase, Schedule
+from django.conf import settings
+
 from application.business_logic import generate_expiring_applications_list_cm_applications, \
     generate_expiring_applications_list_nanny_applications, generate_list_of_expired_cm_applications, \
     generate_list_of_expired_nanny_applications
 from application.notify import send_email
-from .models import Application, UserDetails, applicant_name
-from django.conf import settings
+from .models import Application, UserDetails, ApplicantName
 from datetime import datetime, timedelta
-from application.services.db_gateways import IdentityGatewayActions
+from application.services.db_gateways import IdentityGatewayActions, NannyGatewayActions
+from . import utils
 
-from django_cron import CronJobBase, Schedule
+
+log = logging.getLogger(__name__)
 
 
-class automatic_deletion(CronJobBase):
+class AutomaticDeletion(CronJobBase):
 
-    RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQUENCY
+    RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQ_MINS
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'application.automatic_deletion'
 
     def do(self):
-        log = logging.getLogger('django.server')
-        log.info('Checking for expired  and expiring applications')
+        with utils.CronErrorContext():
+            log.info('Checking for expired  and expiring applications')
+
+            with utils.CronErrorContext():
+                self._childminder_expiry_warnings()
+            with utils.CronErrorContext():
+                self._nanny_expiry_warnings()
+            with utils.CronErrorContext():
+                self._childminder_deletions()
+            with utils.CronErrorContext():
+                self._nanny_deletions()
+
+    def _childminder_expiry_warnings(self):
+
         send_reminder_cm = generate_expiring_applications_list_cm_applications()
-        send_reminder_nanny = generate_expiring_applications_list_nanny_applications()
-        expired_cm_applications = generate_list_of_expired_cm_applications()
-        expired_nanny_applications = generate_list_of_expired_nanny_applications()
 
         for cm_application in send_reminder_cm:
-            if cm_application.application_expiry_email_sent is False:
+            with utils.CronErrorContext():
+
+                if cm_application.application_expiry_email_sent:
+                    log.debug('Already sent')
+                    continue
+
                 log.info(str(datetime.now()) + ' - Sending reminder email: ' + str(cm_application.pk))
                 log.info(cm_application.application_id)
 
                 template_id = 'b52414b8-afb4-4b6b-8b10-d87efa2714f4'
-                email = UserDetails.objects.get(application_id=cm_application).email
-                base_url = settings.PUBLIC_APPLICATION_URL
-                email.magic_link_email = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(
-                    string.digits)])
-                email.magic_link_email = email.magic_link_email.upper()
-                log.info(email, base_url, email.magic_link_email)
-                personalisation = {"link": base_url + '/validate/' + email.magic_link_email,
-                                   "first_name": applicant_name}
+                user = UserDetails.objects.get(application_id=cm_application)
+                try:
+                    name_model = ApplicantName.objects.get(application_id=cm_application)
+                except ApplicantName.DoesNotExist:
+                    # applicant might not have got as far as completing personal details
+                    name_model = None
+                if name_model and name_model.first_name:
+                    applicant_first_name = name_model.first_name
+                else:
+                    applicant_first_name = 'applicant'
+                base_url = settings.CHILDMINDER_EMAIL_VALIDATION_URL
+                user.magic_link_email = ''.join([random.choice(string.ascii_letters + string.digits)
+                                                 for n in range(12)])
+                user.magic_link_email = user.magic_link_email.upper()
+                log.info((user, base_url, user.magic_link_email))
+                personalisation = {"link": base_url + '/validate/' + user.magic_link_email,
+                                   "first_name": applicant_first_name}
                 log.info(personalisation['link'])
-                r = send_email(email, personalisation, template_id)
-                cm_application.application_expiry_email_sent = True
+                r = send_email(user.email, personalisation, template_id, service_name='Childminder')
                 log.info(r)
+                if r.status_code not in (200, 201):
+                    raise ConnectionError(r.status_code)
+                cm_application.application_expiry_email_sent = True
                 cm_application.save()
-                email.save()
+                user.save()
+
+    def _nanny_expiry_warnings(self):
+
+        send_reminder_nanny = generate_expiring_applications_list_nanny_applications()
 
         for nanny_application in send_reminder_nanny:
-            if nanny_application.application_expiry_email_sent is False:
-                log.info(str(datetime.now()) + ' - Sending reminder email: ' + str(nanny_application.pk))
-                log.info(nanny_application.application_id)
+            with utils.CronErrorContext():
+
+                if nanny_application['application_expiry_email_sent']:
+                    log.debug('Already sent')
+                    continue
+
+                log.info(str(datetime.now()) + ' - Sending reminder email: ' + nanny_application['application_id'])
+                log.info(nanny_application['application_id'])
 
                 template_id = '3751bbf7-fbe7-4289-a3ed-6afbd2bab8bf'
-                email = IdentityGatewayActions().read('user_details', params={'application_id': nanny_application}).email
-                base_url = settings.PUBLIC_APPLICATION_URL
-                email.magic_link_email = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(
-                    string.digits)])
-                email.magic_link_email = email.magic_link_email.upper()
-                log.info(email, base_url, email.magic_link_email)
-                personalisation = {"link": base_url + '/validate/' + email.magic_link_email,
-                                   "first_name": applicant_name}
+                response = IdentityGatewayActions().read('user',
+                                                         params={'application_id': nanny_application['application_id']})
+                if response.status_code != 200:
+                    raise ConnectionError(response.status_code)
+                user = response.record
+
+                response = NannyGatewayActions().read('applicant-personal-details',
+                                                      params={'application_id': nanny_application['application_id']})
+                if response.status_code == 200:
+                    personal = response.record
+                elif response.status_code == 404:
+                    personal = None
+                else:
+                    raise ConnectionError(response.status_code)
+
+                if personal and personal['first_name']:
+                    applicant_first_name = personal['first_name']
+                else:
+                    applicant_first_name = 'applicant'
+
+                base_url = settings.NANNY_EMAIL_VALIDATION_URL
+                user['magic_link_email'] = ''.join([random.choice(string.ascii_letters + string.digits)
+                                                   for n in range(12)])
+                user['magic_link_email'] = user['magic_link_email'].upper()
+                log.info((user, base_url, user['magic_link_email']))
+                personalisation = {"link": base_url + '/validate/' + user['magic_link_email'],
+                                   "first_name": applicant_first_name}
                 log.info(personalisation['link'])
-                r = send_email(email, personalisation, template_id)
-                nanny_application.application_expiry_email_sent = True
+                r = send_email(user['email'], personalisation, template_id, service_name='Nannies')
+                if r.status_code not in (200, 201):
+                    raise ConnectionError(r.status_code)
                 log.info(r)
-                nanny_application.save()
-                email.save()
+                nanny_application['application_expiry_email_sent'] = True
+                response = NannyGatewayActions().put('application', nanny_application)
+                if response.status_code != 200:
+                    raise ConnectionError(response.status_code)
+                response = IdentityGatewayActions().put('user', user)
+                if response.status_code != 200:
+                    raise ConnectionError(response.status_code)
+
+    def _childminder_deletions(self):
+
+        expired_cm_applications = generate_list_of_expired_cm_applications()
 
         for cm_application in expired_cm_applications:
+            with utils.CronErrorContext():
+                log.info(str(datetime.now()) + ' - Deleting application: ' + str(cm_application.pk))
 
-            log.info(str(datetime.now()) + ' - Deleting application: ' + str(cm_application.pk))
+                # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
+                # ForeignKey
+                cm_application.delete()
 
-            # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
-            # ForeignKey
-            cm_application.delete()
+    def _nanny_deletions(self):
+
+        expired_nanny_applications = generate_list_of_expired_nanny_applications()
 
         for nanny_application in expired_nanny_applications:
+            with utils.CronErrorContext():
+                log.info(str(datetime.now()) + ' - Deleting application: ' + str(nanny_application['application_id']))
 
-            log.info(str(datetime.now()) + ' - Deleting application: ' + str(nanny_application.pk))
-
-            # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
-            # ForeignKey
-            nanny_application.delete()
+                # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
+                # ForeignKey
+                response = NannyGatewayActions().delete('application',
+                                                        params={'application_id': nanny_application['application_id']})
+                if response.status_code not in (200, 204):
+                    raise ConnectionError(response.status_code)

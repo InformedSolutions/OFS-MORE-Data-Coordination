@@ -1,12 +1,13 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.test import TestCase
 from uuid import UUID
 
-from ..business_logic import generate_expired_resends, find_accepted_applications, generate_expiring_applications_list
-from ..models import AdultInHome, Application, UserDetails
+from ..business_logic import find_accepted_applications, generate_expiring_applications_list_cm_applications
+from ..models import AdultInHome, UserDetails
 from ..resend_email import *
 
 
+# noinspection PyMethodMayBeStatic
 class DataCoordinatorTests(TestCase):
 
     def test_resend_email_expired(self):
@@ -218,7 +219,8 @@ class DataCoordinatorTests(TestCase):
 
     def test_whether_reminder_email_is_sent_when_email_not_sent_previously(self):
         """
-        Test to check logic for reminder email for 55 days inactivity when the email has already been sent to the applicant in the past
+        Test to check logic for reminder email for 55 days inactivity when the email has already been sent to the
+        applicant in the past
         """
         test_application_id = 'f8c42666-1367-4878-92e2-1cee6ebcb48c'
         test_login_id = '004551ca-21fa-4dbe-9095-0384e73b3cbe'
@@ -256,7 +258,7 @@ class DataCoordinatorTests(TestCase):
             magic_link_sms=''
         )
 
-        expiring_applications = generate_expiring_applications_list()
+        expiring_applications = generate_expiring_applications_list_cm_applications()
         assert (len(expiring_applications) == 1)
         application.delete()
         user_record.delete()
@@ -301,7 +303,7 @@ class DataCoordinatorTests(TestCase):
             magic_link_sms=''
         )
 
-        expiring_applications = generate_expiring_applications_list()
+        expiring_applications = generate_expiring_applications_list_cm_applications()
         assert (len(expiring_applications) == 0)
         application.delete()
         user_record.delete()
