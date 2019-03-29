@@ -15,22 +15,32 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Automatic deletion frequency is done in minutes
-AUTOMATIC_DELETION_FREQUENCY = 120
+AUTOMATIC_DELETION_FREQ_MINS = 120
+
+SEND_EMAIL_POLL_MINS = 1
 
 # Expiry threshold for applications in days
-EXPIRY_THRESHOLD = 90
+APPLICATION_EXPIRY_THRESHOLD_DAYS = 60
+
+# Warning before expiry email threshold for applications
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 55))
 
 # The interval after which an email detailing next steps is sent
-NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10)
+NEXT_STEPS_EMAIL_DELAY_IN_DAYS = float(os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10))
 
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 
-PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
+CHILDMINDER_EMAIL_VALIDATION_URL = os.environ.get('CHILDMINDER_EMAIL_VALIDATION_URL')
+NANNY_EMAIL_VALIDATION_URL = os.environ.get('NANNY_EMAIL_VALIDATION_URL')
+
+# Base URL of nanny gateway
+APP_NANNY_GATEWAY_URL = os.environ.get('APP_NANNY_GATEWAY_URL')
+
+# Base URL of identity gateway
+APP_IDENTITY_URL = os.environ.get('APP_IDENTITY_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
-
 
 # Application definition
 
@@ -62,7 +72,7 @@ MIDDLEWARE = [
 CRON_CLASSES = [
     "application.resend_email.ResendEmail",
     "application.delayed_email.DelayedEmail",
-    "application.automatic_deletion.automatic_deletion"
+    "application.automatic_deletion.AutomaticDeletion"
 ]
 
 ROOT_URLCONF = 'data_coordinator.urls'
@@ -85,6 +95,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'data_coordinator.wsgi.application'
 
+# Test outputs
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_VERBOSE = True
+TEST_OUTPUT_DESCRIPTIONS = True
+TEST_OUTPUT_DIR = 'xmlrunner'
+
+MIGRATION_MODULES = {'application': 'application.tests.test_migrations'}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -100,33 +118,36 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 
-# Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
 LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
-  'formatters': {
-    'console': {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
             # exact format is not important, this is the minimum information
             'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         },
-        },
-  'handlers': {
-    'django.server': {
-        'level': 'INFO',
-        'class': 'logging.handlers.RotatingFileHandler',
-        'maxBytes': 1 * 1024 * 1024,
-        'filename': BASE_DIR + '/logs/output.log',
-        'formatter': 'console',
-        'maxBytes': 1 * 1024 * 1024,
-        'backupCount': 30
     },
-   },
-   'loggers': {
-     'django.server': {
-       'handlers': ['django.server'],
-         'level': 'INFO',
-           'propagate': True,
-      },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1 * 1024 * 1024,
+            'filename': BASE_DIR + '/logs/output.log',
+            'formatter': 'console',
+            'backupCount': 30
+        },
+        'console': {
+            'level': 'DEBUG',
+            'formatter': 'console',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 

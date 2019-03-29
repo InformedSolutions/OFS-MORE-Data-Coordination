@@ -66,12 +66,16 @@ class Application(models.Model):
     date_accepted = models.DateTimeField(blank=True, null=True)
     date_submitted = models.DateTimeField(blank=True, null=True)
     date_last_accessed = models.DateTimeField(blank=True, null=True)
+    application_expiry_email_sent = models.NullBooleanField(blank=True, null=True, default=False)
     application_reference = models.CharField(blank=True, null=True, max_length=9,
                                              validators=[RegexValidator(r'(\w{2})([0-9]{7})')])
     ofsted_visit_email_sent = models.DateTimeField(blank=True, null=True)
+    publish_details = models.NullBooleanField(blank=True, null=True, default=None)
     working_in_other_childminder_home = models.NullBooleanField(blank=True, null=True, default=None)
     own_children = models.NullBooleanField(blank=True, null=True, default=None)
-    own_children_not_in_home = models.NullBooleanField(blank=True, null=True, default=None)
+    reasons_known_to_social_services = models.TextField(null=True, default="")  # with_respect_to_your_children
+    known_to_social_services_pith = models.NullBooleanField(blank=True, null=True, default=None)
+    reasons_known_to_social_services_pith = models.TextField(null=True, default="")  # with_respect_to_your_children
 
     @classmethod
     def get_id(cls, app_id):
