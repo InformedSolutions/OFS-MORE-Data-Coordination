@@ -50,8 +50,8 @@ def generate_expiring_applications_list_cm_applications():
     """
 
     threshold_datetime = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD_DAYS)
-    log.debug('childminders not accessed in {} days (before {})'.format(settings.WARNING_EMAIL_THRESHOLD_DAYS,
-                                                                        threshold_datetime))
+    log.debug('childminder drafts not accessed for {} days (before {})'.format(settings.WARNING_EMAIL_THRESHOLD_DAYS,
+                                                                               threshold_datetime))
     expiring_applications = list(
         Application.objects.filter(application_status='DRAFTING', date_last_accessed__lt=threshold_datetime)
     )
@@ -65,8 +65,8 @@ def generate_expiring_applications_list_nanny_applications():
     """
 
     threshold_datetime = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD_DAYS)
-    log.debug('nannies not accessed in {} days (before {})'.format(settings.WARNING_EMAIL_THRESHOLD_DAYS,
-                                                                   threshold_datetime))
+    log.debug('nanny drafts not accessed for {} days (before {})'.format(settings.WARNING_EMAIL_THRESHOLD_DAYS,
+                                                                         threshold_datetime))
     response = NannyGatewayActions().list('application',
                                           params={"application_status": 'DRAFTING',
                                                   "last_accessed_before": threshold_datetime.isoformat()})
@@ -83,8 +83,8 @@ def generate_expiring_applications_list_nanny_applications():
 
 def generate_list_of_expired_cm_applications():
     expiry_threshold = datetime.now() - timedelta(days=settings.APPLICATION_EXPIRY_THRESHOLD_DAYS)
-    log.debug('childminders not accessed in {} days (before {})'.format(settings.APPLICATION_EXPIRY_THRESHOLD_DAYS,
-                                                                        expiry_threshold))
+    log.debug('childminder drafts not accessed for {} days (before {})'.format(
+        settings.APPLICATION_EXPIRY_THRESHOLD_DAYS, expiry_threshold))
     # Determine expired applications based on date last accessed
     expired_submissions_cm = list(Application.objects.filter(application_status='DRAFTING',
                                                              date_last_accessed__lt=expiry_threshold))
@@ -95,8 +95,8 @@ def generate_list_of_expired_cm_applications():
 
 def generate_list_of_expired_nanny_applications():
     expiry_threshold = datetime.now() - timedelta(days=settings.APPLICATION_EXPIRY_THRESHOLD_DAYS)
-    log.debug('nannies not accessed in {} days (before {})'.format(settings.APPLICATION_EXPIRY_THRESHOLD_DAYS,
-                                                                   expiry_threshold))
+    log.debug('nanny drafts not accessed for {} days (before {})'.format(settings.APPLICATION_EXPIRY_THRESHOLD_DAYS,
+                                                                         expiry_threshold))
     response = NannyGatewayActions().list('application',
                                           params={"application_status": 'DRAFTING',
                                                   "last_accessed_before": expiry_threshold.isoformat()})
