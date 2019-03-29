@@ -56,14 +56,16 @@ class DBGatewayActions:
 
                 if func.__name__ == 'list':
                     logger.error(
-                        '!GATEWAY ERROR! "{}" request to API endpoint "{}" with {}: {} returned {} status code - see the Gateway logs for traceback'.format(
+                        ('!GATEWAY ERROR! "{}" request to API endpoint "{}" with {}: {} returned {} status code '
+                         '- see the Gateway logs for traceback').format(
                             verb_name, endpoint_name, list(kwargs['params'].keys()), list(kwargs['params'].values()),
                             response.status_code)
                     )
 
                 else:
                     logger.error(
-                        '!GATEWAY ERROR! "{}" request to API endpoint "{}" with {}: {} returned {} status code - see the Gateway logs for traceback'.format(
+                        ('!GATEWAY ERROR! "{}" request to API endpoint "{}" with {}: {} returned {} status code '
+                         '- see the Gateway logs for traceback').format(
                             verb_name, args[0], endpoint_lookup_field, kwargs['params'][endpoint_lookup_field],
                             response.status_code)
                     )
@@ -75,9 +77,7 @@ class DBGatewayActions:
         return log_wrapper
 
     def list(self, endpoint, params):
-        query_params = ''.join(['&' + key + '=' + value for key, value in params.items()])
-
-        response = requests.get(self.target_url_prefix + endpoint + '/?' + query_params)
+        response = requests.get(self.target_url_prefix + endpoint + '/', params)
 
         if response.status_code == 200:
             response.record = json.loads(response.text)
