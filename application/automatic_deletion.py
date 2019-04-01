@@ -1,6 +1,7 @@
 import logging
 import random
 import string
+import time
 
 from django_cron import CronJobBase, Schedule
 from django.conf import settings
@@ -26,24 +27,24 @@ class AutomaticDeletion(CronJobBase):
     code = 'application.automatic_deletion'
 
     def do(self):
-        with utils.CronErrorContext():
+        with utils.CronErrorContext() as error_context:
             log.info('Checking for expired  and expiring applications')
 
-            with utils.CronErrorContext():
-                self._childminder_expiry_warnings()
-            with utils.CronErrorContext():
-                self._nanny_expiry_warnings()
-            with utils.CronErrorContext():
-                self._childminder_deletions()
-            with utils.CronErrorContext():
-                self._nanny_deletions()
+            with error_context.sub():
+                self._childminder_expiry_warnings(error_context)
+            with error_context.sub():
+                self._nanny_expiry_warnings(error_context)
+            with error_context.sub():
+                self._childminder_deletions(error_context)
+            with error_context.sub():
+                self._nanny_deletions(error_context)
 
-    def _childminder_expiry_warnings(self):
+    def _childminder_expiry_warnings(self, error_context):
 
         send_reminder_cm = generate_expiring_applications_list_cm_applications()
 
         for cm_application in send_reminder_cm:
-            with utils.CronErrorContext():
+            with error_context.sub():
 
                 if cm_application.application_expiry_email_sent:
                     log.debug('Already sent')
@@ -67,6 +68,8 @@ class AutomaticDeletion(CronJobBase):
                 user.magic_link_email = ''.join([random.choice(string.ascii_letters + string.digits)
                                                  for n in range(12)])
                 user.magic_link_email = user.magic_link_email.upper()
+                # "expiry date" is actually creation time as epoch seconds
+                user.email_expiry_date = int(time.time())
                 log.info((user, base_url, user.magic_link_email))
                 personalisation = {"link": base_url + '/validate/' + user.magic_link_email,
                                    "first_name": applicant_first_name}
@@ -79,12 +82,12 @@ class AutomaticDeletion(CronJobBase):
                 cm_application.save()
                 user.save()
 
-    def _nanny_expiry_warnings(self):
+    def _nanny_expiry_warnings(self, error_context):
 
         send_reminder_nanny = generate_expiring_applications_list_nanny_applications()
 
         for nanny_application in send_reminder_nanny:
-            with utils.CronErrorContext():
+            with error_context.sub():
 
                 if nanny_application['application_expiry_email_sent']:
                     log.debug('Already sent')
@@ -118,6 +121,8 @@ class AutomaticDeletion(CronJobBase):
                 user['magic_link_email'] = ''.join([random.choice(string.ascii_letters + string.digits)
                                                    for n in range(12)])
                 user['magic_link_email'] = user['magic_link_email'].upper()
+                # "expiry date" is actually creation time as epoch seconds
+                user['email_expiry_date'] = int(time.time())
                 log.info((user, base_url, user['magic_link_email']))
                 personalisation = {"link": base_url + '/validate/' + user['magic_link_email'],
                                    "first_name": applicant_first_name}
@@ -134,24 +139,24 @@ class AutomaticDeletion(CronJobBase):
                 if response.status_code != 200:
                     raise ConnectionError(response.status_code)
 
-    def _childminder_deletions(self):
+    def _childminder_deletions(self, error_context):
 
         expired_cm_applications = generate_list_of_expired_cm_applications()
 
         for cm_application in expired_cm_applications:
-            with utils.CronErrorContext():
+            with error_context.sub():
                 log.info(str(datetime.now()) + ' - Deleting application: ' + str(cm_application.pk))
 
                 # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
                 # ForeignKey
                 cm_application.delete()
 
-    def _nanny_deletions(self):
+    def _nanny_deletions(self, error_context):
 
         expired_nanny_applications = generate_list_of_expired_nanny_applications()
 
         for nanny_application in expired_nanny_applications:
-            with utils.CronErrorContext():
+            with error_context.sub():
                 log.info(str(datetime.now()) + ' - Deleting application: ' + str(nanny_application['application_id']))
 
                 # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
