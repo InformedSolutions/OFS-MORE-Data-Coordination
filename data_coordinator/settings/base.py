@@ -19,7 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 AUTOMATIC_DELETION_FREQUENCY = 120
 
 # Expiry threshold for applications in days
-EXPIRY_THRESHOLD = 60
+NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 60)
+
+# Expiry threshold for applications in days
+CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 60)
 
 # Warning before expiry email threshold for applications in days
 WARNING_EMAIL_THRESHOLD = os.environ.get('WARNING_EMAIL_THRESHOLD', 55)
