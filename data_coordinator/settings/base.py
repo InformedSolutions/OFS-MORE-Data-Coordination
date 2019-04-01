@@ -20,14 +20,10 @@ AUTOMATIC_DELETION_FREQ_MINS = 120
 SEND_EMAIL_POLL_MINS = 1
 
 # Expiry threshold for applications in days
-<<<<<<< HEAD
-APPLICATION_EXPIRY_THRESHOLD_DAYS = 60
-=======
 NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 60)
 
 # Expiry threshold for applications in days
 CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 60)
->>>>>>> Updates to allow cleardown environment variables
 
 # Warning before expiry email threshold for applications
 WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 55))
