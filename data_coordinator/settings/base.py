@@ -23,9 +23,6 @@ SEND_EMAIL_POLL_MINS = 1
 NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 60)
 
 # Expiry threshold for applications in days
-NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 60)
-
-# Expiry threshold for applications in days
 CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 60)
 
 # Warning before expiry email threshold for applications
