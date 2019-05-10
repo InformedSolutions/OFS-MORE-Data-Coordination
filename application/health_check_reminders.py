@@ -59,7 +59,7 @@ class HealthCheckReminderEmail(CronJobBase):
 
                                        }
 
-                    r = send_email(email, personalisation, template_id)
+                    r = send_email(email, personalisation, template_id, service_name="New adults in the home")
                     log.info(r)
                     if r.status_code not in (200, 201):
                             raise ConnectionError(r.status_code)
@@ -100,7 +100,7 @@ class HealthCheckReminderEmail(CronJobBase):
 
                                        }
 
-                    r = send_email(adult_email, adult_email_personalisation, adult_template_id)
+                    r = send_email(adult_email, adult_email_personalisation, adult_template_id, service_name="New adults in the home")
                     log.info("Sending third health check reminder email to adult")
                     log.info(r)
                     if r.status_code not in (200, 201):
@@ -110,7 +110,7 @@ class HealthCheckReminderEmail(CronJobBase):
 
                     cm_template_id = "3e12c3ce-4c5f-4271-bd91-6fa4f1e91e13"
                     cm_email = IdentityGatewayActions().read('user_details', params={'application_id': token_id}).record['email']
-                    r = send_email(cm_email, cm_email_personalisation, cm_template_id)
+                    r = send_email(cm_email, cm_email_personalisation, cm_template_id, service_name="New adults in the home")
                     log.info(r)
                     if r.status_code not in (200, 201):
                         raise ConnectionError(r.status_code)
