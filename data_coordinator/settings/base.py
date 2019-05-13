@@ -45,6 +45,8 @@ APP_NANNY_GATEWAY_URL = os.environ.get('APP_NANNY_GATEWAY_URL')
 # Base URL of identity gateway
 APP_IDENTITY_URL = os.environ.get('APP_IDENTITY_URL')
 
+APP_HM_GATEWAY_URL = os.environ.get('APP_HM_GATEWAY_URL')
+
 HM_EMAIL_VALIDATION_URL = os.environ.get('HM_EMAIL_VALIDATION_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
