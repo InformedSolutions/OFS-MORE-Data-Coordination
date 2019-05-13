@@ -135,8 +135,8 @@ def generate_list_of_adults_not_completed_health_check(no_days):
 
     if response.status_code == 200:
         adults_waiting = response.record
-        email_sent = datetime.strptime(record['email_resent_timestamp'], '%Y-%m-%d')
         for adult in adults_waiting:
+            email_sent = datetime.strptime(adult['email_resent_timestamp'], '%Y-%m-%d')
             if now - relativedelta(days=no_days) <= email_sent and not adult[sent_field]:
                 adults_to_remind.append(adult)
     elif response.status_code == 404:
