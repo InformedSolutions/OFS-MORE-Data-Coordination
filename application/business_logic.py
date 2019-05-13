@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
+
+from dateutil.relativedelta import relativedelta
+
 from .models import AdultInHome, Application
-from application.services.db_gateways import NannyGatewayActions
+from application.services.db_gateways import NannyGatewayActions, HMGatewayActions
 
 from django.conf import settings
 
@@ -110,5 +113,38 @@ def generate_list_of_expired_nanny_applications():
     log.debug('found {}'.format(len(expired_submissions_nanny)))
 
     return expired_submissions_nanny
+
+
+def generate_list_of_adults_not_completed_health_check(no_days):
+    """
+    function to list any adults who haven't completed the household members health check
+    after x days
+    :param no_days: the number of days which is the threshold for the reminder email
+    :return: list of adult records
+    """
+    now = datetime.today()
+    adults_to_remind = []
+    response = HMGatewayActions().list('adult',
+                                          params={"adult_status": 'WAITING', 'health_check_status': 'To do', })
+    if no_days == settings.SECOND_HEALTH_CHECK_REMINDER_THRESHOLD:
+        sent_field = 'first_health_check_reminder_sent'
+    elif no_days == settings.THIRD_HEALTH_CHECK_REMINDER_THRESHOLD:
+        sent_field = 'second_health_check_reminder_sent'
+    else:
+        return adults_to_remind
+
+    if response.status_code == 200:
+        adults_waiting = response.record
+        for adult in adults_waiting:
+            if now - relativedelta(days=no_days) <= adult['email_resent_timestamp'] and not adult[sent_field]:
+                adults_to_remind.append(adult)
+    elif response.status_code == 404:
+        adults_to_remind = []
+    else:
+        raise ConnectionError(response.status_code)
+
+    log.debug('found {}'.format(len(adults_to_remind)))
+
+    return adults_to_remind
 
 

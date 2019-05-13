@@ -168,3 +168,18 @@ class NannyGatewayActions(DBGatewayActions):
     }
 
     target_url_prefix = settings.APP_NANNY_GATEWAY_URL + '/api/v1/'
+
+
+class HMGatewayActions(DBGatewayActions):
+    """
+    Class for handling all requests to the Household Member Gateway service.
+    """
+    _endpoint_pk_dict = {
+        'application': 'token_id',
+        'adult': 'adult_id',
+        'dpa-auth': 'token_id',
+        'serious-illness': 'illness_id',
+        'hospital-admissions': 'admission_id'
+    }
+
+    target_url_prefix = settings.APP_HM_GATEWAY_URL + '/api/v1/'
