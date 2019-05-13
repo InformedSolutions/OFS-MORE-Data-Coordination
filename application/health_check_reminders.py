@@ -26,8 +26,6 @@ class HealthCheckReminderEmail(CronJobBase):
             log.info('Checking for applications that have been accepted x days ago')
             send_second_reminder = generate_list_of_adults_not_completed_health_check(settings.SECOND_HEALTH_CHECK_REMINDER_THRESHOLD)
             send_third_reminder = generate_list_of_adults_not_completed_health_check(settings.THIRD_HEALTH_CHECK_REMINDER_THRESHOLD)
-            log.info(send_second_reminder)
-            log.info(send_third_reminder)
 
             # send second reminder email
             for adult in send_second_reminder:
