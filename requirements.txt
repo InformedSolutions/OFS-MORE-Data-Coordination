@@ -4,3 +4,5 @@ unittest-xml-reporting==1.11.0
 requests==2.18.4
 django_cron
 django-debug-toolbar==1.9.1
+python-dateutil==2.7.3
+
