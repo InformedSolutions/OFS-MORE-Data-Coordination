@@ -26,7 +26,7 @@ class HealthCheckReminderEmail(CronJobBase):
             send_second_reminder = generate_list_of_adults_not_completed_health_check(settings.SECOND_HEALTH_CHECK_REMINDER_THRESHOLD)
             send_third_reminder = generate_list_of_adults_not_completed_health_check(settings.THIRD_HEALTH_CHECK_REMINDER_THRESHOLD)
 			log.info('sending ' + str(len(send_second_reminder)) + ' second reminders')
-			
+
 			log.info('sending ' + str(len(send_third_reminder)) + ' third reminders')
 
             # send second reminder email

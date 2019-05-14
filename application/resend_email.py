@@ -24,7 +24,7 @@ class ResendEmail(CronJobBase):
 
     def do(self):
         with utils.CronErrorContext():
-            log.info('Checking for household member health checks not completed in the last x days')
+            log.info('Checking for cm applications submitted')
             expired_resends = generate_expired_resends()
             log.info(expired_resends)
             # For each adult record, resend the household member health check email
