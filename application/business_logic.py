@@ -127,9 +127,9 @@ def generate_list_of_adults_not_completed_health_check(no_days):
     response = HMGatewayActions().list('adult',
                                           params={"adult_status": 'WAITING', 'health_check_status': 'To do', })
     if no_days == settings.SECOND_HEALTH_CHECK_REMINDER_THRESHOLD:
-        sent_field = 'first_health_check_reminder_sent'
-    elif no_days == settings.THIRD_HEALTH_CHECK_REMINDER_THRESHOLD:
         sent_field = 'second_health_check_reminder_sent'
+    elif no_days == settings.THIRD_HEALTH_CHECK_REMINDER_THRESHOLD:
+        sent_field = 'third_health_check_reminder_sent'
     else:
         return adults_to_remind
 
