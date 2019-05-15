@@ -28,7 +28,6 @@ class HealthCheckReminderEmail(CronJobBase):
             log.info(str(len(send_second_reminder)) + " second health reminders")
             log.info(str(len(send_third_reminder)) + " third health reminders")
 
-
             # send second reminder email
             for adult in send_second_reminder:
                 with utils.CronErrorContext():
@@ -89,7 +88,7 @@ class HealthCheckReminderEmail(CronJobBase):
                     log.info(str(datetime.now()) + ' - Sending second health check reminder: ' + str(adult_id))
                     adult_template_id = 'a9cf45d9-ab54-4c49-afa1-59b7cebb334f'
                     adult_email = adult['email']
-                    log.info(email)
+                    log.info(adult_email)
                     base_url = settings.HM_EMAIL_VALIDATION_URL
                     token = adult['token']
                     link = base_url + "/" + token
