@@ -48,7 +48,7 @@ class HealthCheckReminderEmail(CronJobBase):
                     template_id = 'a9cf45d9-ab54-4c49-afa1-59b7cebb334f'
                     email = adult['email']
                     log.info(email)
-                    base_url = settings.HM_EMAIL_VALIDATION_URL
+                    base_url = settings.HM_EMAIL_VALIDATION_URL  + '/health-questions'
                     token = adult['token']
                     link = base_url + "/" + token
                     log.info(base_url)
@@ -89,7 +89,7 @@ class HealthCheckReminderEmail(CronJobBase):
                     adult_template_id = 'a9cf45d9-ab54-4c49-afa1-59b7cebb334f'
                     adult_email = adult['email']
                     log.info(adult_email)
-                    base_url = settings.HM_EMAIL_VALIDATION_URL
+                    base_url = settings.HM_EMAIL_VALIDATION_URL + '/health-questions'
                     token = adult['token']
                     link = base_url + "/" + token
                     log.info(base_url)
