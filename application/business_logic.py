@@ -6,6 +6,9 @@ from django.conf import settings
 import logging
 
 
+log = logging.getLogger(__name__)
+
+
 def generate_expired_resends():
     """
     Method to return a list of AdultInHome records which are still in To Do status (not Done or Flagged) after an email
@@ -38,3 +41,30 @@ def find_accepted_applications():
                                    )
     )
     return send_next_steps
+
+
+def generate_expiring_applications_list_cm_applications():
+    """
+    Method to return a list of childminder applications that have not been accessed in the last 55 days
+    """
+
+    threshold_datetime = datetime.now() - timedelta(days=settings.WARNING_EMAIL_THRESHOLD_DAYS)
+    log.debug('childminder drafts not accessed for {} days (before {})'.format(settings.WARNING_EMAIL_THRESHOLD_DAYS,
+                                                                               threshold_datetime))
+    expiring_applications = list(
+        Application.objects.filter(application_status='DRAFTING', date_last_accessed__lt=threshold_datetime)
+    )
+    log.debug('found {}'.format(len(expiring_applications)))
+    return expiring_applications
+
+
+def generate_list_of_expired_cm_applications():
+    expiry_threshold = datetime.now() - timedelta(days=settings.CHILDMINDER_EXPIRY_THRESHOLD)
+    log.debug('childminder drafts not accessed for {} days (before {})'.format(
+        settings.CHILDMINDER_EXPIRY_THRESHOLD, expiry_threshold))
+    # Determine expired applications based on date last accessed
+    expired_submissions_cm = list(Application.objects.filter(application_status='DRAFTING',
+                                                             date_last_accessed__lt=expiry_threshold))
+
+    log.debug('found {}'.format(len(expired_submissions_cm)))
+    return expired_submissions_cm

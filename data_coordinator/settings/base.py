@@ -21,6 +21,12 @@ AUTOMATIC_DELETION_FREQUENCY = 120
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
 
+# Expiry threshold for applications in days
+CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 60)
+
+# Warning before expiry email threshold for applications
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 55))
+
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 
@@ -28,6 +34,7 @@ PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
 
+CHILDMINDER_EMAIL_VALIDATION_URL = os.environ.get('CHILDMINDER_EMAIL_VALIDATION_URL')
 
 # Application definition
 
