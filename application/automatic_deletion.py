@@ -32,7 +32,7 @@ class AutomaticDeletion(CronJobBase):
             with error_context.sub():
                 self._childminder_deletions(error_context)
 
-    def childminder_expiry_warnings(self, error_context):
+    def _childminder_expiry_warnings(self, error_context):
 
         send_reminder_cm = generate_expiring_applications_list_cm_applications()
 
@@ -75,7 +75,7 @@ class AutomaticDeletion(CronJobBase):
                 cm_application.save()
                 user.save()
 
-    def childminder_deletions(self, error_context):
+    def _childminder_deletions(self, error_context):
 
         expired_cm_applications = generate_list_of_expired_cm_applications()
 
