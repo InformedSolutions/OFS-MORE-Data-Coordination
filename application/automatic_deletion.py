@@ -13,7 +13,7 @@ from . import utils
 
 from .business_logic import generate_expiring_applications_list_cm_applications, generate_list_of_expired_cm_applications
 
-#log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class AutomaticDeletion(CronJobBase):
@@ -24,7 +24,6 @@ class AutomaticDeletion(CronJobBase):
     code = 'application.automatic_deletion'
 
     def do(self):
-        log = logging.getLogger('django.server')
         log.info('Checking for expired  and expiring applications')
 
         self._childminder_expiry_warnings()
