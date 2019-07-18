@@ -67,7 +67,7 @@ class AutomaticDeletion(CronJobBase):
                 personalisation = {"link": base_url + '/validate/' + user.magic_link_email,
                                    "first_name": applicant_first_name}
                 log.info(personalisation['link'])
-                r = send_email(user.email, personalisation, template_id, service_name='Childminder')
+                r = send_email(user.email, personalisation, template_id)
                 log.info(r)
                 if r.status_code not in (200, 201):
                     raise ConnectionError(r.status_code)
