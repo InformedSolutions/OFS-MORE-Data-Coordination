@@ -22,10 +22,10 @@ AUTOMATIC_DELETION_FREQUENCY = 1
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
 
 # Expiry threshold for applications in days
-CHILDMINDER_EXPIRY_THRESHOLD = float(os.environ.get('CHILDMINDER_EXPIRY_THRESHOLD', 60))
+CHILDMINDER_EXPIRY_THRESHOLD = float(os.environ.get('CHILDMINDER_EXPIRY_THRESHOLD', 90))
 
 # Warning before expiry email threshold for applications
-WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 55))
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
