@@ -33,7 +33,8 @@ def send_email(email, personalisation, template_id):
     notification_request = {
         'email': email,
         'personalisation': personalisation,
-        'templateId': template_id
+        'templateId': template_id,
+        'service_name': 'Childminder'
     }
     log.info(notification_request)
     r = requests.post(base_request_url + '/api/v1/notifications/email/',
