@@ -29,4 +29,4 @@ DATABASES = {
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3w4&7wa%udc1hl6xsfep9=)jc3^5mk=f9e_643=z)d)7sjwiow'
+SECRET_KEY = os.environ.get('SECRET_KEY')
