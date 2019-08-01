@@ -22,13 +22,13 @@ SEND_EMAIL_POLL_MINS = 1
 HEALTH_CHECK_REMINDER_FREQ_MINS = 1
 
 # Expiry threshold for applications in days
-NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 60)
+NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 90)
 
 # Expiry threshold for applications in days
-CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 60)
+CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90)
 
 # Warning before expiry email threshold for applications
-WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 55))
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = float(os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10))
