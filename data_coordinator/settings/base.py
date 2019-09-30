@@ -16,7 +16,21 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Automatic deletion frequency is done in minutes
-AUTOMATIC_DELETION_FREQUENCY = 120
+AUTOMATIC_DELETION_FREQ_MINS = 1
+
+SEND_EMAIL_POLL_MINS = 1
+
+HEALTH_CHECK_REMINDER_FREQ_MINS = 1
+
+# Expiry threshold for applications in days
+NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 90)
+
+# Expiry threshold for applications in days
+CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90)
+
+# Warning before expiry email threshold for applications
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 0.003))
+>>>>>>> Stashed changes
 
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
