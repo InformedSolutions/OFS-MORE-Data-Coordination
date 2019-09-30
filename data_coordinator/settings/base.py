@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-AUTOMATIC_DELETION_FREQ_MINS = 1
+AUTOMATIC_DELETION_FREQ_MINS = 120
 
 SEND_EMAIL_POLL_MINS = 1
 
@@ -28,7 +28,7 @@ NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 90)
 CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90)
 
 # Warning before expiry email threshold for applications
-WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 0.003))
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
 
 # The interval after which an email detailing next steps is sent
