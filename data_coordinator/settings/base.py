@@ -30,6 +30,7 @@ CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90
 # Warning before expiry email threshold for applications
 WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 0.003))
 
+
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = float(os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10))
 
