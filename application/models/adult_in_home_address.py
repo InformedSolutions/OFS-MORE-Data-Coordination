@@ -11,13 +11,17 @@ class AdultInHomeAddress(models.Model):
     adult_in_home_address_id = models.UUIDField(primary_key=True, default=uuid4)
     adult_id = models.ForeignKey(AdultInHome, on_delete=models.CASCADE, db_column='adult_id')
     application_id = models.ForeignKey(Application, on_delete=models.CASCADE, db_column='application_id')
-    adult_in_home_address = models.IntegerField(blank=True, null=True )
+    adult_in_home_address = models.IntegerField(blank=True, null=True)
     street_line1 = models.CharField(max_length=100, blank=True)
     street_line2 = models.CharField(max_length=100, blank=True)
     town = models.CharField(max_length=100, blank=True)
     county = models.CharField(max_length=100, blank=True)
     country = models.CharField(max_length=100, blank=True)
     postcode = models.CharField(max_length=8, blank=True)
+
+    moved_in_day = models.IntegerField(blank=True, null=True)
+    moved_in_month = models.IntegerField(blank=True, null=True)
+    moved_in_year = models.IntegerField(blank=True, null=True)
 
     @property
     def timelog_fields(self):
@@ -40,7 +44,11 @@ class AdultInHomeAddress(models.Model):
             'county',
             'country',
             'postcode',
+            'moved_in_day',
+            'moved_in_month',
+            'moved_in_year',
         )
+
 
     class Meta:
         db_table = 'ADULT_IN_HOME_ADDRESS'
