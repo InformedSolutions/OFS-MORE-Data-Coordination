@@ -19,7 +19,10 @@ class AdultInHomeAddress(models.Model):
     country = models.CharField(max_length=100, blank=True)
     postcode = models.CharField(max_length=8, blank=True)
 
-    @property
+    moved_in_day = models.IntegerField(blank=True, null=True)
+    moved_in_month = models.IntegerField(blank=True, null=True)
+    moved_in_year = models.IntegerField(blank=True, null=True)
+    
     def timelog_fields(self):
         """
         Specify which fields to track in this model once application is returned.
@@ -40,6 +43,9 @@ class AdultInHomeAddress(models.Model):
             'county',
             'country',
             'postcode',
+            'moved_in_day',
+            'moved_in_month',
+            'moved_in_year',
         )
 
     class Meta:
