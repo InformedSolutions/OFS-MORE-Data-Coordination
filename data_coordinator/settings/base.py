@@ -92,7 +92,8 @@ CRON_CLASSES = [
 ]
 
 if ENABLE_HM:
-    CRON_CLASSES.append["application.health_check_reminders.HealthCheckReminderEmail"]
+    HM_CRON_CLASSES = ["application.health_check_reminders.HealthCheckReminderEmail"]
+    CRON_CLASSES = CRON_CLASSES + HM_CRON_CLASSES
 
 ROOT_URLCONF = 'data_coordinator.urls'
 
