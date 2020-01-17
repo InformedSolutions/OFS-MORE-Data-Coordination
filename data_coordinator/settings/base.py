@@ -56,6 +56,8 @@ EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
 SECOND_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('SECOND_HEALTH_CHECK_REMINDER_THRESHOLD', 5)
 THIRD_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('THIRD_HEALTH_CHECK_REMINDER_THRESHOLD', 10)
 
+ENABLE_HM = os.environ.get('ENABLE_HM') in ['true', True, 'True']
+
 # Application definition
 
 BUILTIN_APPS = [
@@ -86,9 +88,11 @@ MIDDLEWARE = [
 CRON_CLASSES = [
     "application.resend_email.ResendEmail",
     "application.delayed_email.DelayedEmail",
-    "application.automatic_deletion.AutomaticDeletion",
-    "application.health_check_reminders.HealthCheckReminderEmail"
+    "application.automatic_deletion.AutomaticDeletion"
 ]
+
+if ENABLE_HM:
+    CRON_CLASSES.append["application.health_check_reminders.HealthCheckReminderEmail"]
 
 ROOT_URLCONF = 'data_coordinator.urls'
 
