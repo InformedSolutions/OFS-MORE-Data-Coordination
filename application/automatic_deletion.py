@@ -2,7 +2,6 @@ import logging
 import random
 import string
 import time
-
 from django_cron import CronJobBase, Schedule
 from django.conf import settings
 
@@ -14,16 +13,21 @@ from .models import Application, UserDetails, ApplicantName
 from datetime import datetime, timedelta
 from application.services.db_gateways import IdentityGatewayActions, NannyGatewayActions
 from . import utils
+from django_cron import CronJobBase, Schedule
+from . import utils
 
+
+from .business_logic import generate_expiring_applications_list_cm_applications, generate_list_of_expired_cm_applications
 
 log = logging.getLogger(__name__)
+
 
 
 class AutomaticDeletion(CronJobBase):
 
     RUN_EVERY_MINS = settings.AUTOMATIC_DELETION_FREQ_MINS
 
-    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    schedule = Schedule(run_every_mins=1)
     code = 'application.automatic_deletion'
 
     def do(self):
@@ -38,6 +42,7 @@ class AutomaticDeletion(CronJobBase):
                 self._childminder_deletions(error_context)
             with error_context.sub():
                 self._nanny_deletions(error_context)
+
 
     def _childminder_expiry_warnings(self, error_context):
 
@@ -74,7 +79,9 @@ class AutomaticDeletion(CronJobBase):
                 personalisation = {"link": base_url + '/validate/' + user.magic_link_email,
                                    "first_name": applicant_first_name}
                 log.info(personalisation['link'])
+
                 r = send_email(user.email, personalisation, template_id, service_name='Childminder')
+
                 log.info(r)
                 if r.status_code not in (200, 201):
                     raise ConnectionError(r.status_code)

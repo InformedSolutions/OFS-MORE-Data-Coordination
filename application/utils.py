@@ -5,7 +5,6 @@ import logging
 
 log = logging.getLogger(__name__)
 
-
 class CronErrorContext:
     """
     Context manager to log exceptions in a concise format and recover
@@ -75,3 +74,4 @@ def error_short_summary(ex_tuple=None):
             exname=extype.__name__, exval=exval, filename=frame.filename, name=frame.name, lineno=frame.lineno)
     except:
         return 'FAILED TO SUMMARISE ERROR'
+

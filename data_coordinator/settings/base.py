@@ -30,9 +30,14 @@ CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90
 # Warning before expiry email threshold for applications
 WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
-
 # The interval after which an email detailing next steps is sent
 NEXT_STEPS_EMAIL_DELAY_IN_DAYS = float(os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10))
+
+# Expiry threshold for applications in days
+CHILDMINDER_EXPIRY_THRESHOLD = float(os.environ.get('CHILDMINDER_EXPIRY_THRESHOLD', 90))
+
+# Warning before expiry email threshold for applications
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
@@ -52,11 +57,15 @@ HM_EMAIL_VALIDATION_URL = os.environ.get('HM_EMAIL_VALIDATION_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
 
+<<<<<<< HEAD
 # change these to 5 and 10
 SECOND_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('SECOND_HEALTH_CHECK_REMINDER_THRESHOLD', 5)
 THIRD_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('THIRD_HEALTH_CHECK_REMINDER_THRESHOLD', 10)
 
 ENABLE_HM = os.environ.get('ENABLE_HM') in ['true', True, 'True']
+=======
+CHILDMINDER_EMAIL_VALIDATION_URL = os.environ.get('CHILDMINDER_EMAIL_VALIDATION_URL')
+>>>>>>> master
 
 # Application definition
 

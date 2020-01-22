@@ -40,8 +40,8 @@ class PreviousName(models.Model):
     end_day = models.IntegerField(blank=True, null=True)
     end_month = models.IntegerField(blank=True, null=True)
     end_year = models.IntegerField(blank=True, null=True)
-
     order = models.IntegerField(blank=True, null=True)
+
 
     @property
     def person(self):

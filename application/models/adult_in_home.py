@@ -56,6 +56,7 @@ class AdultInHome(models.Model):
     name_end_month = models.IntegerField(blank=True, null=True)
     name_end_year = models.IntegerField(blank=True, null=True)
 
+
     @property
     def timelog_fields(self):
         """
@@ -95,8 +96,12 @@ class AdultInHome(models.Model):
 
     @property
     def get_full_name(self):
+<<<<<<< HEAD
         return '{0}{1} {2}'.format(self.first_name, " " + self.middle_names if self.middle_names else "",
                                    self.last_name)
+=======
+        return '{0}{1} {2}'.format(self.first_name, " "+self.middle_names if self.middle_names else "", self.last_name)
+>>>>>>> master
 
     class Meta:
         db_table = 'ADULT_IN_HOME'
