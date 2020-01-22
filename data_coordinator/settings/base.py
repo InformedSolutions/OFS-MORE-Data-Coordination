@@ -15,11 +15,23 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Automatic deletion frequency is done in minutes
-AUTOMATIC_DELETION_FREQUENCY = 1
+AUTOMATIC_DELETION_FREQ_MINS = 120
+
+SEND_EMAIL_POLL_MINS = 1
+
+HEALTH_CHECK_REMINDER_FREQ_MINS = 1
+
+# Expiry threshold for applications in days
+NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 90)
+
+# Expiry threshold for applications in days
+CHILDMINDER_EXPIRY_THRESHOLD = os.environ.get("CHILDMINDER_EXPIRY_THRESHOLD", 90)
+
+# Warning before expiry email threshold for applications
+WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 70))
 
 # The interval after which an email detailing next steps is sent
-NEXT_STEPS_EMAIL_DELAY_IN_DAYS = os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 0.0001)
+NEXT_STEPS_EMAIL_DELAY_IN_DAYS = float(os.environ.get('NEXT_STEPS_EMAIL_DELAY_IN_DAYS', 10))
 
 # Expiry threshold for applications in days
 CHILDMINDER_EXPIRY_THRESHOLD = float(os.environ.get('CHILDMINDER_EXPIRY_THRESHOLD', 90))
@@ -30,11 +42,30 @@ WARNING_EMAIL_THRESHOLD_DAYS = float(os.environ.get('WARNING_EMAIL_THRESHOLD', 7
 # Base URL of notify gateway
 NOTIFY_URL = os.environ.get('APP_NOTIFY_URL')
 
-PUBLIC_APPLICATION_URL = os.environ.get('PUBLIC_APPLICATION_URL')
+CHILDMINDER_EMAIL_VALIDATION_URL = os.environ.get('CHILDMINDER_EMAIL_VALIDATION_URL')
+NANNY_EMAIL_VALIDATION_URL = os.environ.get('NANNY_EMAIL_VALIDATION_URL')
+
+# Base URL of nanny gateway
+APP_NANNY_GATEWAY_URL = os.environ.get('APP_NANNY_GATEWAY_URL')
+
+# Base URL of identity gateway
+APP_IDENTITY_URL = os.environ.get('APP_IDENTITY_URL')
+
+APP_HM_GATEWAY_URL = os.environ.get('APP_HM_GATEWAY_URL')
+
+HM_EMAIL_VALIDATION_URL = os.environ.get('HM_EMAIL_VALIDATION_URL')
 
 EXECUTING_AS_TEST = os.environ.get('EXECUTING_AS_TEST')
 
+<<<<<<< HEAD
+# change these to 5 and 10
+SECOND_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('SECOND_HEALTH_CHECK_REMINDER_THRESHOLD', 5)
+THIRD_HEALTH_CHECK_REMINDER_THRESHOLD = os.environ.get('THIRD_HEALTH_CHECK_REMINDER_THRESHOLD', 10)
+
+ENABLE_HM = os.environ.get('ENABLE_HM') in ['true', True, 'True']
+=======
 CHILDMINDER_EMAIL_VALIDATION_URL = os.environ.get('CHILDMINDER_EMAIL_VALIDATION_URL')
+>>>>>>> master
 
 # Application definition
 
@@ -69,6 +100,11 @@ CRON_CLASSES = [
     "application.automatic_deletion.AutomaticDeletion"
 ]
 
+if ENABLE_HM:
+    HM_CRON_CLASSES = ["application.health_check_reminders.HealthCheckReminderEmail"]
+    CRON_CLASSES = CRON_CLASSES + HM_CRON_CLASSES
+
+
 ROOT_URLCONF = 'data_coordinator.urls'
 
 TEMPLATES = [
@@ -89,6 +125,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'data_coordinator.wsgi.application'
 
+# Test outputs
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_VERBOSE = True
+TEST_OUTPUT_DESCRIPTIONS = True
+TEST_OUTPUT_DIR = 'xmlrunner'
+
+MIGRATION_MODULES = {'application': 'application.tests.test_migrations'}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -104,7 +148,6 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 
-# Automatic Django logging at the INFO level (i.e everything the comes to the console when ran locally)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -13,16 +13,19 @@ import requests
 from django.conf import settings
 
 
-def send_email(email, personalisation, template_id):
+log = logging.getLogger(__name__)
+
+
+def send_email(email, personalisation, template_id, service_name='Childminder'):
     """
     Method to send an email using the Notify Gateway API
     :param email: string containing the e-mail address to send the e-mail to
     :param personalisation: object containing the personalisation related to an application
     :param template_id: string containing the templateId of the notification request
+    :param service_name: (optional) string specifying which notify service to use. Defaults to 'Childminder'
     :return: :class:`Response <Response>` object containing http request response
     :rtype: requests.Response
     """
-    log = logging.getLogger('django.server')
     base_request_url = settings.NOTIFY_URL
     header = {'content-type': 'application/json'}
 
@@ -34,7 +37,7 @@ def send_email(email, personalisation, template_id):
         'email': email,
         'personalisation': personalisation,
         'templateId': template_id,
-        'service_name': 'Childminder'
+        'service_name': service_name,
     }
     log.info(notification_request)
     r = requests.post(base_request_url + '/api/v1/notifications/email/',

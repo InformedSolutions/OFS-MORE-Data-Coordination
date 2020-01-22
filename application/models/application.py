@@ -77,9 +77,11 @@ class Application(models.Model):
     reasons_known_to_social_services_pith = models.TextField(null=True, default="")  # with_respect_to_your_children
     application_expiry_email_sent = models.NullBooleanField(blank=True, null=True, default=False)
 
+
     @classmethod
     def get_id(cls, app_id):
         return cls.objects.get(pk=app_id)
 
     class Meta:
         db_table = 'APPLICATION'
+        managed = False

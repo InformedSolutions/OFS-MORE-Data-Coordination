@@ -10,8 +10,10 @@ class CronErrorContext:
     Context manager to log exceptions in a concise format and recover
     from exceptions from sub-sections, for more robust and
     easily-diagnosable cron tasks.
+
     Wrap job with new instance and use the 'sub' method to define sections
     of the job that can fail independently. e.g:
+
         # errors at this level are logged as ERROR by default and re-raised
         with CronErrorContext() as error_context:
             data = load_some_data()
@@ -72,3 +74,4 @@ def error_short_summary(ex_tuple=None):
             exname=extype.__name__, exval=exval, filename=frame.filename, name=frame.name, lineno=frame.lineno)
     except:
         return 'FAILED TO SUMMARISE ERROR'
+
