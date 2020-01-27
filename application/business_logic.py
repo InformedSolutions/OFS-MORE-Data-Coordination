@@ -151,3 +151,19 @@ def generate_list_of_adults_not_completed_health_check(no_days):
     return adults_to_remind
 
 
+def generate_list_of_pre_integration_cm_applications():
+    """
+    method to get any draft applications created before the 22/01/2020 at 10:00am when
+    integrated childminder was deployed to production
+    :return:
+    """
+    expiry_threshold = datetime(2020, 1, 22, 10)
+    log.debug('childminder drafts not accessed since {}'.format( expiry_threshold))
+    # Determine expired applications based on date last accessed
+    expired_submissions_cm = list(Application.objects.filter(application_status='DRAFTING',
+                                                             date_created__lt=expiry_threshold))
+
+    log.debug('found {}'.format(len(expired_submissions_cm)))
+    return expired_submissions_cm
+
+
