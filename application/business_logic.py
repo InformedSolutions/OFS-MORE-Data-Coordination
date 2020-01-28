@@ -158,12 +158,12 @@ def generate_list_of_pre_integration_cm_applications():
     :return:
     """
     expiry_threshold = datetime(2020, 1, 22, 10)
-    log.debug('childminder drafts not accessed since {}'.format( expiry_threshold))
+    log.info('childminder drafts not accessed since {}'.format( expiry_threshold))
     # Determine expired applications based on date last accessed
     expired_submissions_cm = list(Application.objects.filter(application_status='DRAFTING',
                                                              date_created__lt=expiry_threshold))
 
-    log.debug('found {}'.format(len(expired_submissions_cm)))
+    log.info('found {}'.format(len(expired_submissions_cm)))
     return expired_submissions_cm
 
 

@@ -153,9 +153,9 @@ class AutomaticDeletion(CronJobBase):
 
         pre_integration_cm_applications = generate_list_of_pre_integration_cm_applications()
 
-        for cm_application in pre_integration_cm_applications_cm_applications:
+        for cm_application in pre_integration_cm_applications:
             with error_context.sub():
-                if cm_application not in expire_cm_applications:
+                if cm_application not in expired_cm_applications:
                     log.info(str(datetime.now()) + ' - Deleting pre-integration application: ' + str(cm_application.pk))
 
                     # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
