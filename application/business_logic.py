@@ -150,4 +150,44 @@ def generate_list_of_adults_not_completed_health_check(no_days):
 
     return adults_to_remind
 
+def extract_applications_in_queue():
+    """
+    function to list any application that has a status of SUBMITTED, grouped by date and by application.
+    :return: list of adult, childminder and nanny records
+    """
+    now = datetime.now()
+    initial_date = datetime(2020, 2, 19, 0, 0)
+    delta = timedelta(days=1)
+    adult_response = HMGatewayActions().list('adult', params={"adult_status": 'SUBMITTED'})
+    nanny_response = NannyGatewayActions().list('application', params={"application_status": 'SUBMITTED'})
+    cm_applications = list(Application.objects.filter(application_status='SUBMITTED',))
+    apps_in_queue = {}
+    while initial_date <= now:
+        cm_apps = 0
+        adult_apps = 0
+        nanny_apps = 0
+        for item in cm_applications:
+            if item.date_submitted == initial_date:
+                cm_apps += 1
+        if adult_response.status_code == 200:
+            adults_submitted = adult_response.record
+            for adult in adults_submitted:
+                if adult.date_resubmitted is None and adult.date_submitted == initial_date:
+                    adult_apps += 1
+                elif adult.date_resubmitted == initial_date:
+                    adult_apps += 1
+        if nanny_response.status_code == 200:
+            nannies_submitted = nanny_response.record
+            for nanny in nannies_submitted:
+                if nanny.date_submitted == initial_date:
+                    nanny_apps += 1
+
+        apps_in_queue[initial_date]['Childminder'] = cm_apps
+        apps_in_queue[initial_date]['Adults'] = adult_apps
+        apps_in_queue[initial_date]['Nanny'] = nanny_apps
+        initial_date += delta
+
+    return (apps_in_queue)
+
+
 

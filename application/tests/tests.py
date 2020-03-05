@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.test import TestCase
 from uuid import UUID
 
-from ..business_logic import find_accepted_applications, generate_expiring_applications_list_cm_applications
+from ..business_logic import find_accepted_applications, generate_expiring_applications_list_cm_applications, extract_applications_in_queue
 from ..models import AdultInHome, UserDetails
 from ..resend_email import *
 
@@ -307,3 +307,8 @@ class DataCoordinatorTests(TestCase):
         assert (len(expiring_applications) == 0)
         application.delete()
         user_record.delete()
+
+    def test_applications_in_queue(self):
+        extract_applications_in_queue()
+
+
