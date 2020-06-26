@@ -8,7 +8,7 @@ from django.conf import settings
 
 from application.business_logic import generate_expiring_applications_list_cm_applications, \
     generate_expiring_applications_list_nanny_applications, generate_list_of_expired_cm_applications, \
-    generate_list_of_expired_nanny_applications
+    generate_list_of_expired_nanny_applications, generate_list_of_pre_integration_cm_applications
 from application.notify import send_email
 from .models import Application, UserDetails, ApplicantName
 from datetime import datetime, timedelta
@@ -38,6 +38,8 @@ class AutomaticDeletion(CronJobBase):
                 self._childminder_deletions(error_context)
             with error_context.sub():
                 self._nanny_deletions(error_context)
+            with error_context.sub():
+                self._adults_deletions(error_context)
 
     def _childminder_expiry_warnings(self, error_context):
 
@@ -150,6 +152,19 @@ class AutomaticDeletion(CronJobBase):
                 # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
                 # ForeignKey
                 cm_application.delete()
+
+        pre_integration_cm_applications = generate_list_of_pre_integration_cm_applications()
+
+        for cm_application in pre_integration_cm_applications:
+            with error_context.sub():
+                if cm_application not in expired_cm_applications:
+                    log.info(str(datetime.now()) + ' - Deleting pre-integration application: ' + str(cm_application.pk))
+
+                    # Delete Application, with the deletion of associated records handled by on_delete=models.CASCADE in the
+                    # ForeignKey
+                    cm_application.delete()
+                else:
+                    log.info(str(datetime.now()) + ' - application already deleted ' + str(cm_application.pk))
 
     def _nanny_deletions(self, error_context):
 
