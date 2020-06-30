@@ -160,7 +160,7 @@ def generate_list_of_pre_integration_cm_applications():
     log.info('childminder returned not accessed since {}'.format( expiry_threshold))
     # Determine expired applications based on date last accessed
     expired_submissions_cm = list(Application.objects.filter(application_status='FURTHER_INFORMATION',
-                                                             date_last_accessed__lt=expiry_threshold))
+                                                             date_created__lt=expiry_threshold))
 
     log.info('found {}'.format(len(expired_submissions_cm)))
     return expired_submissions_cm
