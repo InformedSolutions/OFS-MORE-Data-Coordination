@@ -1,7 +1,7 @@
 django==1.11.29
 psycopg2-binary==2.7.4
 unittest-xml-reporting==1.11.0
-requests==2.20.0
+requests==2.24.0
 django_cron
 django-debug-toolbar==1.9.1
 python-dateutil==2.7.3
