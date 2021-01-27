@@ -17,9 +17,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 AUTOMATIC_DELETION_FREQ_MINS = 120
 
-SEND_EMAIL_POLL_MINS = 1
+SEND_EMAIL_POLL_MINS = 120
 
-HEALTH_CHECK_REMINDER_FREQ_MINS = 1
+HEALTH_CHECK_REMINDER_FREQ_MINS = 120
 
 # Expiry threshold for applications in days
 NANNY_EXPIRY_THRESHOLD = os.environ.get("NANNY_EXPIRY_THRESHOLD", 90)
